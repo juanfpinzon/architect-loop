@@ -1,27 +1,34 @@
 # Launcher post (single long post, NOT a thread — link-free main post)
 
-> Post this, attach `loop-diagram.png`, and quote/attach the X Article.
-> Repo link goes in the FIRST REPLY (X penalizes external links 50–90% in
-> the main post). Chart goes in the second reply.
+> Post this, attach `stats.png` (or `loop-diagram.png`), and quote/attach
+> the X Article. Repo link goes in the FIRST REPLY (X penalizes external
+> links 50–90% in the main post). Chart goes in the second reply.
 
 ---
 
-Stop letting one model grade its own homework.
+Your Fable quota isn't too small. Your harness is wasting it on typing.
 
-I run two now: Claude Fable as the architect, GPT-5.5 Codex as the builder.
-Different labs. Neither trusts the other. The repo is the only memory.
+Fable is the best judgment model ever shipped — $10/$50 per MTok — and most
+coding sessions burn it reading files, running tests, and writing
+boilerplate. Work a flat-rate model does just as well.
 
-Packaged it as two open-source Claude Code skills. The loop is:
+So I built the harness that splits the job, as two open-source Claude Code
+skills. Fable judges. GPT-5.5 Codex types. The repo remembers.
 
-1. Fable specs a one-PR slice and freezes the acceptance gates in the repo — committed BEFORE any code exists
-2. A fresh Codex process builds for hours on xhigh. It must argue with the spec before writing code. Silent compliance = failure
+The loop is:
+
+1. Fable specs a one-PR slice + freezes the acceptance gates in the repo — committed BEFORE any code exists
+2. A fresh Codex process builds for hours on xhigh (flat-rate ChatGPT plan). It must argue with the spec before writing code — silent compliance = failure
 3. Fable runs the gates itself and judges raw numbers. Builder claims are hearsay
-4. Not in docs/HANDOFF.md = didn't happen
-5. Repeat. Minutes of judgment per block, hours of unattended building
+4. Not in docs/HANDOFF.md = didn't happen. State lives in the repo, which is why minutes of Fable per block is enough
+5. Repeat
 
-If the builder so much as edits a gate file, git diff catches it and the slice auto-fails. Goalpost-moving is structurally impossible, not discouraged.
+Quality goes up, not down: cross-vendor review kills self-grading, and if
+the builder so much as edits a gate file, git diff catches it and the slice
+auto-fails. Goalpost-moving is structurally impossible.
 
-Both halves run on the subscriptions you already have. No API keys, no token bills.
+Measured splits like this cut top-model spend 58–74%. Judgment minutes on
+Fable. Typing hours on the flat rate. No API keys.
 
 Full writeup in the article below. Repo in the first reply.
 
@@ -43,17 +50,18 @@ Then /architect-research to explore an idea, /architect to build it.
 
 # Second reply (attach effort-chart.png)
 
-Why the builder runs on xhigh: the gap vs high isn't test-pass — it's
-surviving review. Review-pass 38% → 69%, match-the-human-PR 69% → 88%, at
-~2.2× cost. For unattended multi-hour runs, review-survival is the thing
-worth paying for.
+The one place this harness spends MORE per token: the builder runs xhigh
+(~2.2× cost of high) because the gap isn't test-pass — it's surviving
+review. 38% → 69% review-pass, 69% → 88% match-the-human-PR.
+
+Spend aggressively where it compounds. Spend nothing where it doesn't.
 
 ---
 
 # 24–48h follow-up (quote-tweet the launcher)
 
 Update: ran the loop on [project] overnight — [N] slices, [N] gates passed,
-zero gate-file tampering flagged, one builder disagreement that was right
-(it caught [thing] in the spec).
+[$ or quota %] of Fable spent vs [estimate] if Fable had done the typing.
 
-The disagreement protocol is the underrated half of this.
+The disagreement protocol is the underrated half: the builder caught [thing]
+in my spec before burning a single building token on it.
