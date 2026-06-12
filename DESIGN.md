@@ -222,8 +222,12 @@ Facts the skill encodes — several correct widespread misinformation:
 - **Model slug is `gpt-5.5`**, not `gpt-5.5-codex`; the `-codex`-suffixed line
   ended at gpt-5.3 and is deprecated under ChatGPT sign-in. Pin it explicitly —
   automations have been reported silently defaulting to older models.
-- **`--full-auto` is deprecated.** The current unattended invocation is
-  `--sandbox workspace-write -a never`.
+- **`codex exec` is non-interactive by design** — `-a/--ask-for-approval` and
+  `--search` are TUI-only flags that exec rejects (verified live on 0.139).
+  The sandbox flag is the only permission control; web search on exec is
+  `--enable web_search` (older CLIs: `-c tools.web_search=true`). `--full-auto`
+  is deprecated. Because exec flags churn between versions, the skills mandate
+  a one-canary-before-fan-out rule per environment.
 - **Effort** is `-c model_reasoning_effort="xhigh"` (or `high`), per invocation.
 - **Structured telemetry**: `--json` (JSONL event stream) and
   `-o <file>` / `--output-last-message` for the final message;
@@ -245,7 +249,7 @@ Facts the skill encodes — several correct widespread misinformation:
 Canonical dispatch:
 
 ```bash
-codex exec -C <repo> --sandbox workspace-write -a never \
+codex exec -C <repo> --sandbox workspace-write \
   -m gpt-5.5 -c model_reasoning_effort="xhigh" \
   --json -o .architect/last-run.md \
   "<builder block: PHASE rules + slice spec + frozen gate references>"
@@ -290,7 +294,7 @@ breath (fresh-context judgment, R3).
 ### Optional pre-spec research fan-out
 
 Between judging and speccing, the architect may run a research phase: 3–5
-parallel `codex exec --sandbox read-only --search` web-research subagents, each
+parallel `codex exec --sandbox read-only --enable web_search` researchers, each
 answering one narrow non-overlapping question, with the architect adversarially
 verifying load-bearing claims and writing `docs/prd/<slice>.md` itself. Design
 decisions behind it:

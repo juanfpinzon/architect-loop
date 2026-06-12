@@ -52,6 +52,9 @@ commands and the builder block template: `dispatch.md` next to this file.
 - Read the project's operating docs in authority order: `CLAUDE.md` /
   `AGENTS.md` → `README.md` → architecture docs. Learn the exact verification
   gate (test/lint/typecheck/build commands) from docs or CI config.
+- Once per environment: `codex --version` (need ≥ 0.133; older versions and
+  flag fallbacks are covered in `dispatch.md`). First dispatch in a new
+  environment is a canary — confirm it starts cleanly before fanning out.
 - Read `docs/HANDOFF.md` in full plus every `docs/gates/` file it references.
   If missing, create both from `HANDOFF.template.md` (next to this file), fill
   the header from the repo, ask the human only for what isn't derivable.
@@ -94,7 +97,8 @@ Two scales, two routes:
 
 When a trigger fires, read `research.md` next to this file and follow it:
 3–5 narrow non-overlapping questions → parallel read-only
-`codex exec --search` researchers in the background → you adversarially verify
+`codex exec --enable web_search` researchers in the background → you
+adversarially verify
 the load-bearing claims → you write `docs/prd/<slice>.md` with citations and
 commit it. Researchers gather; you judge and write the PRD. Findings without a
 source URL don't enter the PRD.

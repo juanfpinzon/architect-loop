@@ -79,7 +79,7 @@ cut spend 58–74% versus running the top model end-to-end.
 
 The whole integration is one command:
 
-codex exec --sandbox workspace-write -a never -m gpt-5.5 -c model_reasoning_effort="xhigh" "<the spec>"
+codex exec --sandbox workspace-write -m gpt-5.5 -c model_reasoning_effort="xhigh" "<the spec>"
 
 **[IMAGE: loop-diagram.png]**
 

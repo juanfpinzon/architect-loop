@@ -1,15 +1,21 @@
 # Builder dispatch reference
 
-Verified against Codex CLI ≥ 0.133 (June 2026). Facts that correct common
+Verified live against Codex CLI 0.139 (June 2026). Facts that correct common
 misinformation: the model slug is `gpt-5.5` (not `gpt-5.5-codex` — the
--codex-suffixed line is deprecated); `--full-auto` is deprecated in favor of
-`--sandbox workspace-write -a never`; Goal Mode's only real subcommands are
-bare `/goal`, `/goal pause|resume|clear`.
+-codex-suffixed line is deprecated); `--search` and `-a/--ask-for-approval`
+are **TUI-only flags — `codex exec` rejects both** (exec is non-interactive
+by design; the sandbox flag is the only permission control); Goal Mode's only
+real subcommands are bare `/goal`, `/goal pause|resume|clear`.
+
+**Preflight (once per environment):** run `codex --version`. Need ≥ 0.133.
+On the first dispatch in a new environment, launch ONE canary run and confirm
+it starts cleanly before fanning anything out — CLI flags churn between
+versions.
 
 ## Canonical headless dispatch (architect-driven)
 
 ```bash
-codex exec -C <repo-root> --sandbox workspace-write -a never \
+codex exec -C <repo-root> --sandbox workspace-write \
   -m gpt-5.5 -c model_reasoning_effort="xhigh" \
   --json -o .architect/last-run.md \
   "<BUILDER BLOCK>"

@@ -61,14 +61,16 @@ the user redirects.
 One fresh researcher per lane, all parallel, in the background:
 
 ```bash
-codex exec --sandbox read-only --search -a never \
+codex exec --sandbox read-only --enable web_search \
   -m gpt-5.5 -c model_reasoning_effort="high" \
   -o .architect/research/<NN>-<lane>.md \
   "<LANE BLOCK from lanes.md>"
 ```
 
-(If Codex is unavailable, run lanes as read-only Claude subagents with web
-search — the lane blocks work verbatim.)
+(`--search` is TUI-only — `codex exec` rejects it; on CLI < 0.133 use
+`-c tools.web_search=true` instead. Launch ONE canary lane and confirm it
+starts cleanly before fanning out. If Codex is unavailable, run lanes as
+read-only Claude subagents with web search — the lane blocks work verbatim.)
 
 Every lane block carries the full contract — objective, output format, source
 guidance, boundaries — plus:

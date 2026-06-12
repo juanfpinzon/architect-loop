@@ -16,14 +16,17 @@ One fresh `codex exec` per question, all launched in parallel, in the
 background:
 
 ```bash
-codex exec -C <repo-root> --sandbox read-only --search -a never \
+codex exec -C <repo-root> --sandbox read-only --enable web_search \
   -m gpt-5.5 -c model_reasoning_effort="high" \
   -o .architect/research/<NN>-<topic>.md \
   "<RESEARCH BLOCK>"
 ```
 
 - `--sandbox read-only`: researchers never write to the repo.
-- `--search`: live web search (default mode is cached).
+- `--enable web_search`: web search on `codex exec` (`--search` is TUI-only —
+  exec rejects it). On Codex CLI < 0.133 use `-c tools.web_search=true`
+  instead. Launch ONE canary researcher and confirm it starts cleanly before
+  fanning out — exec flags churn between versions.
 - Effort `high`, not `xhigh` — research is coverage work; xhigh buys nothing
   here. Synthesis happens on the architect's side.
 - Optionally pin `[tools.web_search] allowed_domains` in config for
