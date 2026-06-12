@@ -1,138 +1,176 @@
 # architect-loop
 
-**Claude Fable 5 as architect. GPT-5.5 Codex as builder. The repo as the only
-memory.** A Claude Code skill that runs the cross-vendor architect/builder loop
-on flat-rate subscriptions — judgment minutes on the expensive model, typing
-hours on the fast one.
+**Claude Fable is your architect. GPT-5.5 Codex is your builder. The repo is the
+only memory.** Two Claude Code skills that run the cross-vendor agent loop on
+flat-rate subscriptions — no API keys, no token bills.
 
-```
- Claude Fable (architect, effort: high)        GPT-5.5 via codex exec (builder, xhigh)
- ─────────────────────────────────────         ─────────────────────────────────────
- 0 ground in the repo's own docs        ──►    PHASE 0  plan + MANDATORY disagreements
- 1 rule on every disagreement                  PHASE 1  freeze contracts in docs/
- 2 run the gates ITSELF, judge raw             PHASE 2  ≤3-4 disjoint lanes + 1
-   evidence vs verbatim frozen gates                    reviewer lane, commit, push,
- 3 spec next slice; freeze gates to            update docs/HANDOFF.md with RAW
-   docs/gates/ BEFORE dispatch                 results only
- 4 dispatch fresh codex exec, async     ◄──
- 5 post-flight: handoff updated? gates
-   untouched (git diff)? disagreements
-   raised?
-                  └────── docs/HANDOFF.md + docs/gates/ + git ──────┘
-                              the repo remembers everything
-```
+> Fable thinks, Codex builds, the repo remembers, you judge.
 
-## Why this shape
+---
 
-Every serious source on agent harnesses converged on the same four moves:
-separate planning context from execution context; persist state in the repo,
-not the conversation; dispatch fresh-context workers per task; verify with an
-agent that didn't write the code. This skill adds cross-vendor judgment on top —
-the builder and the judge are different models from different labs, which kills
-same-model sycophancy in review and puts each model where it measurably wins.
-
-**[DESIGN.md](DESIGN.md) is the full design document** — twelve rules, each with
-its mechanical enforcement and its citation (Anthropic engineering posts, the
-Fable 5 prompting guide, verified Codex CLI docs, superpowers, the Ralph loop,
-the reward-hacking literature).
-
-## Requirements
-
-- [Claude Code](https://claude.com/claude-code) on any paid plan (the architect)
-- [Codex CLI](https://developers.openai.com/codex/cli) ≥ 0.133 signed into a
-  ChatGPT plan (the builder): `npm i -g @openai/codex@latest`
-
-No API keys required. Both halves run on flat-rate subscriptions.
-
-## Install
-
-```powershell
-# Windows
-.\install.ps1            # global (~/.claude/skills) — works in every repo
-.\install.ps1 -Project   # this repo only (.claude/skills)
-```
+## Install (30 seconds)
 
 ```bash
-# macOS / Linux
-./install.sh             # global
-./install.sh --project   # this repo only
+git clone https://github.com/DanMcInerney/architect-loop
+cd architect-loop && ./install.sh        # Windows: .\install.ps1
+npm i -g @openai/codex@latest            # the builder (Codex CLI >= 0.133)
 ```
 
-Or just copy `skills/architect/` into `~/.claude/skills/architect/`.
+That's it. `./install.sh --project` installs to the current repo only instead
+of globally. You need [Claude Code](https://claude.com/claude-code) on any paid
+plan and the Codex CLI signed into a ChatGPT plan.
 
-## Use
+## Use (two commands)
 
-One architect session per work block:
+In any repo, inside Claude Code:
+
+```
+/architect-research <what you're thinking about building>
+```
+
+…when you're **brainstorming or picking a technology**. Fans out parallel
+Codex web-researchers across six lanes, verifies every claim against sources,
+and writes a cited, decision-oriented report to `docs/research/`.
 
 ```
 /architect
 ```
 
-First run in a repo creates `docs/HANDOFF.md` and `docs/gates/` from the
-template. Every run after that: rules on the builder's open disagreements,
-judges the last slice's raw results against the frozen gates (running the gate
-commands itself — builder claims are hearsay), optionally fans out parallel
-`codex exec --search` web-research subagents and distills their cited findings
-into a PRD (only when the slice touches APIs/tech new to the repo, or you ask:
-`/architect research: <question>`), specs the next one-PR slice,
-freezes its gates with a commit, and dispatches a fresh
-`codex exec --sandbox workspace-write -a never -m gpt-5.5 -c
-model_reasoning_effort="xhigh"` run in the background. Prefer to babysit the
-run yourself? It prints the builder block for an interactive `codex` session
-with `/goal`.
+…when you're **building**. One short session per work block: Claude judges the
+last run's evidence, specs the next one-PR slice with frozen acceptance gates,
+and dispatches a fresh autonomous Codex run that works for hours. Repeat.
 
-Judgment on a slice always happens in a *later* architect session than the one
-that dispatched it. You sit between work blocks — that's where kill/continue
-authority lives.
+---
 
-## Discovery research: `/architect-research`
-
-Brainstorming what to build, picking a technology, or surveying the state of
-the art is a separate, deliberately-invoked skill (research-grade fan-out costs
-~15× chat tokens — it should never be a side-effect):
+## How it works in one picture
 
 ```
-/architect-research <topic or question>
+            ┌──────────── /architect-research (optional, first) ────────────┐
+            │  6 parallel Codex researchers:                                │
+            │  academic · popular repos · cutting-edge · production         │
+            │  patterns · general web · expert opinion                      │
+            │            → Fable verifies claims, writes the report         │
+            └──────────────────────────┬────────────────────────────────────┘
+                                       ▼
+ CLAUDE FABLE (architect, minutes)            GPT-5.5 CODEX (builder, hours)
+ ──────────────────────────────────           ─────────────────────────────────
+ 1 rule on builder disagreements       ──►    PHASE 0  plan + MANDATORY
+ 2 run the gates ITSELF, judge raw                      disagreements
+   evidence vs frozen gates            ◄──    PHASE 1  freeze contracts
+ 3 spec next one-PR slice                     PHASE 2  ≤4 disjoint lanes +
+ 4 freeze gates → commit → dispatch                     1 reviewer lane →
+ 5 post-flight tamper check                             commit, push, update
+                                                        HANDOFF with raw
+                                                        results only
+            └─────── docs/HANDOFF.md + docs/gates/ + git ───────┘
+                       the repo carries everything;
+                  not in the handoff = didn't happen
 ```
 
-It compresses your question into a research brief, fans out parallel
-`codex exec --search` researchers across six lanes — **latest academic papers**
-(arXiv recency + citation snowballing), **most popular repos** (dependents
-evidence, fake-star checks), **cutting-edge repos** (velocity + the
-emerging-vs-hype gate), **design patterns from production-grade libraries**
-(the four-category pattern-mining procedure), **general web**, and a
-second-wave **expert-opinion lane** (the blogs/talks/X of the field's named
-experts, roster-seeded from the first wave; opinions reported as dated,
-conflict-flagged positions, never as facts) — then
-verifies load-bearing claims against ≥2 independent sources (VERIFIED /
-UNVERIFIED / DISPUTED / SUSPICIOUS), runs adversarial falsification searches,
-and writes a decision-oriented report to `docs/research/<topic>.md`: answer
-first, confidence per claim, "what would change this conclusion", open
-questions. That report feeds `/architect`'s PRD when you're ready to build.
+**Who does what:**
 
-## The rules that make it work
+| | Model | Effort | Job |
+|---|---|---|---|
+| Architect | Claude Fable | `high` (pinned by the skill) | judgment only: arbitration, judging evidence, specs, kill/continue |
+| Builder | GPT-5.5 via `codex exec` | `xhigh` (architect may dial per slice) | implementation, hours at a time, unattended |
+| Researchers | GPT-5.5 via `codex exec --search` | `high` | gathering only — never recommendations |
+| Memory | the repo | — | `docs/HANDOFF.md`, `docs/gates/`, `docs/research/`, git history |
+| You | human | — | read the handoff between blocks; kill/continue authority |
 
-1. Not in `docs/HANDOFF.md` = didn't happen.
-2. Gates freeze in `docs/gates/` **before** results exist; a builder edit to a
-   gate file (caught by `git diff`) fails the slice automatically.
-3. Nobody grades their own work — raw results from the builder, gates run by
-   the architect, cross-model review for high-stakes slices.
-4. Disagreement is mandatory; silent compliance is a defect.
-5. Fresh builder context per slice; when a run breaks the repo, reset and
-   re-dispatch — code is cheap, rescue prompting isn't.
+## Why this shape works
+
+Every serious source on agent harnesses — Anthropic's harness-engineering
+posts, the most-installed community skills, the reward-hacking literature —
+converged on the same four moves, and this loop enforces all of them
+mechanically:
+
+1. **Not in `docs/HANDOFF.md` = didn't happen.** State lives in the repo, not
+   the chat. That's why 5 minutes of architect time per block is enough.
+2. **Gates freeze before results exist.** Acceptance criteria are committed to
+   `docs/gates/` *before* dispatch; a builder edit to any gate file (caught by
+   `git diff`) fails the slice automatically. No goalpost-moving, by
+   construction.
+3. **Nobody grades their own work.** The builder reports raw numbers only;
+   the architect runs the gate commands itself; cross-model review for
+   high-stakes slices. Different models from different labs = no same-model
+   sycophancy.
+4. **Disagreement is mandatory.** The builder must challenge the spec (citing
+   real files) before writing code — silent compliance is a defect. The
+   architect rules on every disagreement: ACCEPT / REJECT / MODIFY + why.
+5. **Fresh context per slice.** Every slice is a new Codex process; the
+   architect's window holds judgment only. If a run breaks the repo:
+   `git reset`, re-dispatch. Code is cheap; rescue prompting isn't.
+
+The economics: judgment minutes on the expensive model, typing hours on the
+flat-rate one. Both halves run on subscriptions you already have.
+
+## The research skill, a layer deeper
+
+`/architect-research` isn't "search the web and summarize." It encodes the
+methodology the best deep-research systems converged on:
+
+- **Brief first** — your question is compressed into a research brief that
+  every later step is audited against.
+- **Six lanes, fanned out in parallel** (each a fresh `codex exec --search`,
+  read-only sandbox):
+  1. **Academic** — arXiv recency queries + Semantic Scholar citation
+     snowballing, survey-first
+  2. **Popular repos** — dependents counts as adoption evidence (stars are
+     gameable; ~4.5M fake stars documented)
+  3. **Cutting-edge repos** — star-velocity + the emerging-vs-hype gate
+  4. **Production patterns** — how the 2-3 best libraries in the niche design
+     APIs, errors, extension points, tests — then a cross-library diff
+  5. **General web** — postmortems, comparisons, official docs
+  6. **Expert opinion** *(second wave)* — blogs/talks/X of the field's named
+     experts, roster-seeded from what lanes 1-5 surface
+- **Verification with teeth** — ≥2 independent sources per load-bearing claim,
+  VERIFIED/UNVERIFIED/DISPUTED/SUSPICIOUS tags, adversarial falsification
+  searches, citations only from URLs actually fetched (agents fabricate 3-13%
+  of URLs otherwise).
+- **One author** — Fable writes the report in a single pass: answer first,
+  confidence per claim, "what would change this conclusion", open questions.
+  Expert *opinions* are positions, never facts; expert *disagreements* are
+  flagged as the genuinely open questions.
+
+The report feeds `/architect`'s PRD when you're ready to build.
 
 ## What's in the box
 
-| File | Purpose |
-|------|---------|
-| [DESIGN.md](DESIGN.md) | The research-backed design: 12 rules, failure-mode table, sources |
-| [skills/architect/SKILL.md](skills/architect/SKILL.md) | The architect role: hard rules + the 6-step procedure |
+| File | What it is |
+|---|---|
+| [DESIGN.md](DESIGN.md) | **The design document** — 12 enforced rules, failure-mode table, ~40 cited sources |
+| [skills/architect/SKILL.md](skills/architect/SKILL.md) | The architect role: hard rules + procedure |
 | [skills/architect/dispatch.md](skills/architect/dispatch.md) | Verified `codex exec` commands + the PHASE 0/1/2 builder block |
-| [skills/architect/research.md](skills/architect/research.md) | Slice-scale inline research fan-out |
-| [skills/architect/HANDOFF.template.md](skills/architect/HANDOFF.template.md) | The repo-memory file |
-| [skills/architect-research/SKILL.md](skills/architect-research/SKILL.md) | Discovery research: scope → plan → five-lane fan-out → verify → synthesize |
-| [skills/architect-research/lanes.md](skills/architect-research/lanes.md) | Per-lane researcher blocks with verified endpoints (arXiv, Semantic Scholar, deps.dev, HN Algolia…) |
-| install.ps1 / install.sh | One-command install |
+| [skills/architect/research.md](skills/architect/research.md) | Slice-scale inline fact-check fan-out |
+| [skills/architect/HANDOFF.template.md](skills/architect/HANDOFF.template.md) | The repo-memory file the builder maintains |
+| [skills/architect-research/SKILL.md](skills/architect-research/SKILL.md) | Discovery research: brief → plan → fan-out → verify → synthesize |
+| [skills/architect-research/lanes.md](skills/architect-research/lanes.md) | Per-lane researcher prompts with verified endpoints |
+
+## FAQ
+
+**Do I need API keys?** No. Claude Code runs on your Claude plan; Codex CLI on
+your ChatGPT plan. (Optional: `CODEX_API_KEY` per-token billing for overnight
+runs that must not hit subscription rate windows.)
+
+**What does a builder run cost?** It draws on your ChatGPT plan's 5-hour and
+weekly quotas. Community reference points: a 6.5-hour autonomous run ≈ 20% of
+a $100-tier weekly quota.
+
+**What if the builder wrecks the repo?** One slice per run + a commit per lane
+means `git reset` to the freeze commit and re-dispatch. The handoff records
+what went wrong so the next spec avoids it.
+
+**Can I watch the builder work?** Yes — `/architect` always prints the builder
+block, so instead of the background dispatch you can paste it into an
+interactive `codex` session prefixed with `/goal` and babysit the run.
+
+**Why two skills?** Research-grade fan-out costs ~15× chat-level tokens — it
+should be a deliberate act, not a side-effect of the build loop. `/architect`
+still does small inline fact-checks on its own.
+
+**Where do the rules come from?** [DESIGN.md](DESIGN.md) — every rule cites
+its source (Anthropic engineering, the Fable prompting guide, verified Codex
+CLI docs, superpowers, the Ralph loop, the reward-hacking literature).
 
 ## License
 
