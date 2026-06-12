@@ -1,0 +1,129 @@
+# Lane reference — researcher blocks and verified endpoints
+
+Endpoints verified unauthenticated June 2026. Every lane block starts with this
+preamble, then the lane-specific objective:
+
+```
+You are a web research agent. Answer ONE assigned objective. Do not write code,
+do not make recommendations — judgment belongs to the orchestrator reading your
+output. Budget: <N> searches; if two consecutive searches yield no new
+load-bearing facts, stop and return. OUTPUT: markdown findings — every finding
+carries source URL, source date, the exact figure or a short direct quote, and
+a confidence tag (high = primary source / med = reputable secondary / low =
+single blog or forum post). Prefer primary sources. Record exact version
+numbers and dates. When sources disagree, report the disagreement — do not
+resolve it. If you cannot find evidence, write NOT FOUND — never fill gaps from
+prior knowledge without flagging it. End with the 2-3 findings most likely to
+change a design decision.
+```
+
+## Lane 1 — Academic (latest papers)
+
+Objective: the current academic state of <topic> — most recent survey, the
+frontier preprints, and which papers the field treats as load-bearing.
+
+Pipeline: **survey first → frontier sweep → snowball → score.**
+
+- Recent survey: Semantic Scholar `publicationTypes=Review`, or arXiv
+  `ti:survey AND abs:<topic>` (last ~18 months). The survey supplies canonical
+  terminology and the seed bibliography.
+- Frontier sweep (newest first):
+  `https://export.arxiv.org/api/query?search_query=cat:<cs.XX>+AND+abs:%22<topic>%22&sortBy=submittedDate&sortOrder=descending&max_results=25`
+  (Atom XML; uppercase AND/OR; ≥3s between calls) and
+  `https://api.semanticscholar.org/graph/v1/paper/search?query=<topic>&fields=title,year,citationCount,tldr,venue,externalIds&limit=20&year=2025-2026`
+  (expect 429s — back off and retry; the `tldr` field is gold for triage).
+  Community signal: `https://huggingface.co/api/daily_papers?limit=20` and
+  `https://huggingface.co/papers/trending`. **Papers With Code is dead**
+  (shut down July 2025; HF Papers is the successor) — never cite it.
+- Snowball from the 2-3 best seeds — the most reliable "latest papers" method:
+  forward citations
+  `https://api.semanticscholar.org/graph/v1/paper/arXiv:<id>/citations?fields=title,year,isInfluential&limit=100`
+  and semantic neighbors
+  `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/arXiv:<id>?limit=20`.
+  Fallback when S2 throttles: OpenAlex —
+  `https://api.openalex.org/works?search=<topic>&sort=publication_date:desc&per-page=25&mailto=research@example.com`.
+- Score candidates: citations-per-month (not raw count — meaningless for 2026
+  papers), venue/OpenReview decision (`https://api2.openreview.net/notes/search?term=<topic>&limit=25`
+  has actual reviewer scores), code availability, HF traction. Red flags:
+  preprint-only after 18+ months, self-citation-heavy.
+
+## Lane 2 — Popular repos (what the ecosystem actually uses)
+
+Objective: the 5-10 repos/libraries the ecosystem has actually adopted for
+<topic>, with adoption evidence beyond stars.
+
+- Discovery: GitHub search —
+  `topic:<topic> stars:>1000 archived:false sort:stars`,
+  `"<topic>" in:name,description,readme stars:>2000`, plus awesome-lists as
+  recall boosters (`awesome <topic> in:name stars:>1000`) — re-check `pushed:`
+  on every list entry; lists go stale.
+- **Adoption evidence beats stars**: dependents count via
+  `https://api.deps.dev/v3/systems/<npm|pypi|...>/packages/<name>` or
+  `https://packages.ecosyste.ms` (keyless, 5k req/hr); registry download
+  *trends* (`https://pypistats.org/api/packages/<pkg>/recent`,
+  `https://api.npmjs.org/downloads/point/last-month/<pkg>`).
+- **Fake-star check**: ~4.5M fake stars documented in the wild. Stars without
+  proportional forks/issues/dependents = flag it. Report stars AND dependents
+  AND last release for every repo.
+
+## Lane 3 — Cutting-edge repos (emerging, not hype)
+
+Objective: what's emerging in <topic> in the last ~6 months that practitioners
+are actually adopting — and which hyped repos are already abandoned.
+
+- Where bleeding-edge surfaces first: HF daily/trending papers (code-linked);
+  Hacker News via Algolia —
+  `https://hn.algolia.com/api/v1/search_by_date?query=<topic>&tags=story&numericFilters=points>50`
+  (also `query=github.com` + topic for Show HNs); `https://lobste.rs/t/<tag>.json`;
+  GitHub `topic:<topic> created:>{90d ago} stars:>100 pushed:>{14d ago} sort:stars`;
+  OSS Insight (`https://ossinsight.io/collections/trending`) for transparent
+  velocity ranking.
+- **Emerging-vs-hype gate** (report which side each repo lands on):
+  EMERGING = created recently AND pushed <14d AND star velocity sustained ≥2
+  weeks AND issues getting maintainer responses AND linked from a paper or a
+  track-record org AND forks/issues growing in proportion to stars.
+  HYPE = week-one star spike then stalled pushes, unanswered issues, README
+  promises >> code, single contributor, no tests/releases. Any single signal
+  is gameable; the conjunction is not.
+
+## Lane 4 — Production-grade design patterns
+
+Objective: how the 2-3 best production libraries adjacent to <topic> design
+the thing we're about to build — API ergonomics, error handling, extension
+points, testing patterns — and where they differ.
+
+- Select subjects with the production-grade gate: pushed <6mo (or explicitly
+  stable + responsive issues), tagged releases + changelog in last 12mo,
+  dependents >100 (ecosystem-adjusted), ≥2 active maintainers, CI runs tests
+  on PRs, OSI license, no unaddressed criticals on `https://osv.dev`.
+  Ignore raw stars and commit counts.
+- Reading order — never start at file #1: README + manifest (entry points,
+  exports = the deliberate public surface) → trace ONE canonical happy-path
+  call end to end → tests for the relevant feature (executable documentation
+  of edge-case policy) → 3 closed issues + 2 merged PRs in the area (the
+  "why not" you can't get from code).
+- Extract four categories per library: **API ergonomics** (cost of the 90%
+  case in lines, defaults, config layering), **error handling** (exception
+  hierarchy root, retried vs raised, boundary translation), **extension
+  points** (grep for hook/adapter/middleware/plugin/register/Protocol),
+  **testing patterns** (fixture strategy, how I/O is faked, regression-test-
+  per-bug convention).
+- Then the **cross-library diff**: patterns all of them share are load-bearing;
+  where they differ is a trade-off to document.
+- Tools: GitHub code search (`symbol:<Name>`, `/regex/`, `repo:`, `path:`),
+  `https://grep.app` (usage in the wild), `https://sourcegraph.com/search`.
+  For "what do people actually call", search downstream dependents' code, not
+  the library.
+
+## Lane 5 — General web
+
+Objective: everything the other lanes structurally miss on <topic> — expert
+blog posts, postmortems and failure reports, comparisons, official vendor
+docs/changelogs, pricing/operational constraints.
+
+- Standard multi-angle sweep: official docs/changelogs; named-expert posts;
+  "<X> postmortem" / "<X> at scale" / "<X> problems" for failure reports;
+  "<X> vs <Y>" for comparisons. Date-restrict queries on fast-moving topics.
+- Source hierarchy applies hardest here: SEO listicles and AI-generated
+  aggregators are pointers, never citations — chase them to the primary
+  source or drop the claim.

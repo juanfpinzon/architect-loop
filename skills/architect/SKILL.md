@@ -77,12 +77,20 @@ correctness/requirement/invariant gaps with file:line evidence, no style.
 
 ### 3. Research fan-out (optional — most slices skip this)
 
-Run it only when at least one trigger holds: (a) the slice depends on external
-APIs, libraries, or versions not already used in this repo; (b) a technology or
-approach choice needs facts neither you nor the repo has; (c) the human asked
-(`/architect research: <question>`). Otherwise skip — the builder's
-verify-against-reality requirement already covers routine API checks, and
-researching well-understood slices is pure cost.
+Two scales, two routes:
+
+- **Discovery scale** — brainstorming what to build, technology selection,
+  state-of-the-art surveys → invoke the `/architect-research` skill (five-lane
+  fan-out: academic papers, popular repos, cutting-edge repos, production-grade
+  design patterns, general web; verified + synthesized into
+  `docs/research/<topic>.md`). Its report then distills into the PRD.
+- **Slice scale** — run the inline fan-out below only when at least one trigger
+  holds: (a) the slice depends on external APIs, libraries, or versions not
+  already used in this repo; (b) a narrow approach choice needs facts neither
+  you nor the repo has; (c) the human asked
+  (`/architect research: <question>`). Otherwise skip — the builder's
+  verify-against-reality requirement already covers routine API checks, and
+  researching well-understood slices is pure cost.
 
 When a trigger fires, read `research.md` next to this file and follow it:
 3–5 narrow non-overlapping questions → parallel read-only

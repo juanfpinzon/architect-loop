@@ -85,6 +85,28 @@ Judgment on a slice always happens in a *later* architect session than the one
 that dispatched it. You sit between work blocks — that's where kill/continue
 authority lives.
 
+## Discovery research: `/architect-research`
+
+Brainstorming what to build, picking a technology, or surveying the state of
+the art is a separate, deliberately-invoked skill (research-grade fan-out costs
+~15× chat tokens — it should never be a side-effect):
+
+```
+/architect-research <topic or question>
+```
+
+It compresses your question into a research brief, fans out parallel
+`codex exec --search` researchers across five lanes — **latest academic papers**
+(arXiv recency + citation snowballing), **most popular repos** (dependents
+evidence, fake-star checks), **cutting-edge repos** (velocity + the
+emerging-vs-hype gate), **design patterns from production-grade libraries**
+(the four-category pattern-mining procedure), and **general web** — then
+verifies load-bearing claims against ≥2 independent sources (VERIFIED /
+UNVERIFIED / DISPUTED / SUSPICIOUS), runs adversarial falsification searches,
+and writes a decision-oriented report to `docs/research/<topic>.md`: answer
+first, confidence per claim, "what would change this conclusion", open
+questions. That report feeds `/architect`'s PRD when you're ready to build.
+
 ## The rules that make it work
 
 1. Not in `docs/HANDOFF.md` = didn't happen.
@@ -103,7 +125,10 @@ authority lives.
 | [DESIGN.md](DESIGN.md) | The research-backed design: 12 rules, failure-mode table, sources |
 | [skills/architect/SKILL.md](skills/architect/SKILL.md) | The architect role: hard rules + the 6-step procedure |
 | [skills/architect/dispatch.md](skills/architect/dispatch.md) | Verified `codex exec` commands + the PHASE 0/1/2 builder block |
+| [skills/architect/research.md](skills/architect/research.md) | Slice-scale inline research fan-out |
 | [skills/architect/HANDOFF.template.md](skills/architect/HANDOFF.template.md) | The repo-memory file |
+| [skills/architect-research/SKILL.md](skills/architect-research/SKILL.md) | Discovery research: scope → plan → five-lane fan-out → verify → synthesize |
+| [skills/architect-research/lanes.md](skills/architect-research/lanes.md) | Per-lane researcher blocks with verified endpoints (arXiv, Semantic Scholar, deps.dev, HN Algolia…) |
 | install.ps1 / install.sh | One-command install |
 
 ## License

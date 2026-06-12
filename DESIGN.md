@@ -323,6 +323,56 @@ decisions behind it:
   `.architect/research/`. The builder's PHASE 0 challenges the PRD like any
   other spec input.
 
+### Two skills: `/architect` and `/architect-research`
+
+Discovery-scale research (brainstorming, technology selection, SOTA surveys)
+is a **separate skill**, not a mode of the loop. Three reasons: different
+invocation pattern (discovery precedes a project; the loop runs per work
+block), different deliverable (a decision report vs a dispatch), and cost —
+research-grade fan-out runs ~15× chat-level tokens
+([Anthropic multi-agent research](https://www.anthropic.com/engineering/multi-agent-research-system)),
+so it must be deliberately invoked, never a side-effect. The loop's step 3
+routes: discovery scale → `/architect-research`; narrow slice facts → the
+inline fan-out above.
+
+`/architect-research` encodes the methodology the best deep-research systems
+converged on, with the user's five lanes (academic / popular repos /
+cutting-edge repos / production-grade design patterns / general web) as the
+default brainstorm decomposition:
+
+- **Effort scaling embedded in the prompt** — 1 researcher for fact-finds,
+  2–4 for comparisons, full fan-out for surveys; search budgets 5/15/25 by
+  tier; saturation stop (two no-new-fact searches); max 2 gap-fill rounds.
+  All from Anthropic's published orchestrator numbers — without them, leads
+  over- or under-delegate.
+- **Perspective-diverse decomposition, overlap-checked** before dispatch
+  (Stanford [STORM](https://arxiv.org/abs/2402.14207)'s
+  perspective-guided questioning; the direct antidote to query collapse).
+- **Scope → brief → plan-before-burn** (LangChain
+  [Open Deep Research](https://github.com/langchain-ai/open_deep_research)'s
+  brief-as-north-star; Gemini's user-visible plan). The brief is restated in
+  the report so scope drift is auditable.
+- **Verification as a separate pass against raw sources**: ≥2
+  independent-origin sources per load-bearing claim; four-state tags
+  (VERIFIED/UNVERIFIED/DISPUTED/SUSPICIOUS); adversarial falsification
+  searches; **citations only from URLs fetched this session** — even
+  search-grounded agents fabricate
+  [3–13% of URLs](https://arxiv.org/pdf/2604.03173); recency discipline
+  (dated claims, date-restricted queries) because retrieval systematically
+  favors stale sources.
+- **Parallelize gathering, never synthesis** — one author writes the whole
+  report (LangChain's section-parallel writer produced disjoint reports;
+  Anthropic's CitationAgent exists to stop summarizing-of-summaries).
+  Output is decision-oriented: answer-first, per-finding "what would change
+  this conclusion", explicit open questions.
+- **Verified lane endpoints** live in `lanes.md`: arXiv API recency queries,
+  Semantic Scholar citation snowballing (the most reliable "latest papers"
+  method), deps.dev/ecosyste.ms dependents (adoption evidence beats stars —
+  ~4.5M [fake stars](https://arxiv.org/abs/2412.13459) documented), the
+  emerging-vs-hype conjunction gate, the production-grade gate + four-category
+  pattern-mining procedure, HN Algolia. Papers With Code is dead (July 2025;
+  HF Papers succeeded it) — a stale-source trap the lane file flags.
+
 ---
 
 ## 6. Failure modes → mechanical mitigations

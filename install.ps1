@@ -1,17 +1,20 @@
 param([switch]$Project)
 
-$src = Join-Path $PSScriptRoot "skills\architect"
+$srcRoot = Join-Path $PSScriptRoot "skills"
 if ($Project) {
-    $dest = Join-Path (Get-Location) ".claude\skills\architect"
+    $destRoot = Join-Path (Get-Location) ".claude\skills"
 } else {
-    $dest = Join-Path $env:USERPROFILE ".claude\skills\architect"
+    $destRoot = Join-Path $env:USERPROFILE ".claude\skills"
 }
 
-New-Item -ItemType Directory -Force (Split-Path $dest) | Out-Null
-if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
-Copy-Item -Recurse $src $dest
+New-Item -ItemType Directory -Force $destRoot | Out-Null
+foreach ($skill in Get-ChildItem -Directory $srcRoot) {
+    $dest = Join-Path $destRoot $skill.Name
+    if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
+    Copy-Item -Recurse $skill.FullName $dest
+    Write-Host "Installed /$($skill.Name) to $dest"
+}
 
-Write-Host "Installed /architect to $dest"
 $codex = Get-Command codex -ErrorAction SilentlyContinue
 if ($codex) {
     Write-Host "Codex CLI found: $(codex --version) (need >= 0.133 for default Goal Mode)"

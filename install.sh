@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SRC="$(cd "$(dirname "$0")" && pwd)/skills/architect"
+SRC_ROOT="$(cd "$(dirname "$0")" && pwd)/skills"
 if [ "${1:-}" = "--project" ]; then
-    DEST="$(pwd)/.claude/skills/architect"
+    DEST_ROOT="$(pwd)/.claude/skills"
 else
-    DEST="$HOME/.claude/skills/architect"
+    DEST_ROOT="$HOME/.claude/skills"
 fi
 
-mkdir -p "$(dirname "$DEST")"
-rm -rf "$DEST"
-cp -r "$SRC" "$DEST"
+mkdir -p "$DEST_ROOT"
+for skill in "$SRC_ROOT"/*/; do
+    name="$(basename "$skill")"
+    rm -rf "${DEST_ROOT:?}/$name"
+    cp -r "$skill" "$DEST_ROOT/$name"
+    echo "Installed /$name to $DEST_ROOT/$name"
+done
 
-echo "Installed /architect to $DEST"
 if command -v codex >/dev/null 2>&1; then
     echo "Codex CLI found: $(codex --version) (need >= 0.133 for default Goal Mode)"
 else
