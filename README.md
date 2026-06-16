@@ -98,10 +98,25 @@ Each design choice is source-backed (full citations in
   decomposition rather than fixed lanes — so research lanes are designed per
   topic, after a scout pass.
 
+## Hermes fork adaptation
+
+This fork is being adapted to fit the Hermes operating model rather than using
+upstream's "the repo is the only memory" rule verbatim.
+
+- **Linear** stays the execution truth
+- **shared vault** stays the durable cross-agent memory
+- **Notion** stays the polished human-facing documentation layer
+- **repo-local architect-loop files** stay slice-local execution artifacts
+- **gh-watchdog** stays the downstream PR safety net
+
+The architecture and memory-routing contract for this fork lives in
+[HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md).
+
 ## What's in the box
 
 | File | What it is |
 |---|---|
+| [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md) | Hermes-native owner-system and memory-routing contract for this fork |
 | [DESIGN.md](DESIGN.md) | The design document — 12 enforced rules, failure-mode table, cited sources |
 | [skills/architect/SKILL.md](skills/architect/SKILL.md) | The architect role: hard rules + procedure |
 | [skills/architect/dispatch.md](skills/architect/dispatch.md) | Verified `codex exec` commands, builder block, worktree fan-out, stall triage |
