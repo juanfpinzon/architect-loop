@@ -1,0 +1,27 @@
+version: 1
+
+architect:
+  runtime: claude-code
+  model: "Claude Opus 4.8"
+  effort: high
+
+builder:
+  runtime: codex-exec
+  model: gpt-5.5
+  reasoning_effort: xhigh
+
+reviewer:
+  runtime: claude-code
+  model: "Claude Opus 4.8"
+  effort: high
+  optional_secondary_runtime: codex-review
+  optional_secondary_model: gpt-5.5
+
+researcher:
+  runtime: codex-exec
+  model: gpt-5.5
+  reasoning_effort: high
+
+canary:
+  codex_min_version: 0.133.0
+  require_single_lane_canary: true

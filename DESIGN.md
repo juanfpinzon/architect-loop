@@ -1,8 +1,13 @@
 # DESIGN — The Architect Loop v2
 
-**A source-backed design for a Claude Code harness skill in which Claude Fable 5
-(high effort) acts as architect/orchestrator and GPT-5.5 via Codex CLI (xhigh
-reasoning) acts as builder, with the repo as the only memory.**
+**A source-backed design for a Claude Code harness skill in which judgment and
+execution are separated, with the repo as the only memory.**
+
+The upstream evidence base in this document uses **Claude Fable 5** as the
+architect/orchestrator example and **GPT-5.5 via Codex CLI** as the
+builder/researcher example. In the Hermes fork, the role map is configurable;
+see [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md) for the current defaults and
+proposed config surface.
 
 Researched June 2026 from Anthropic engineering posts, the official Fable 5 and
 Codex CLI documentation, and widely used community harness skills. Prescriptive
@@ -58,8 +63,9 @@ end-to-end
 
 | Role | Who | Effort | Owns |
 |---|---|---|---|
-| **Architect** | Claude Fable 5 in Claude Code (`effort: high` via skill frontmatter) | minutes per work block | arbitration, judging raw evidence against frozen gates, next-slice specs, kill/continue calls |
-| **Builder** | GPT-5.5 via `codex exec` (`model_reasoning_effort: xhigh` default; architect may dial per slice) | hours per slice | implementation, lane agents, raw-results reporting |
+| **Architect** | Configured Claude Code judgment model (upstream evidence base: Claude Fable 5; Hermes default: Claude Opus 4.8) | minutes per work block | arbitration, judging raw evidence against frozen gates, next-slice specs, kill/continue calls |
+| **Builder** | Configured `codex exec` builder model (upstream evidence base and Hermes default: GPT-5.5; `model_reasoning_effort: xhigh` default) | hours per slice | implementation, lane agents, raw-results reporting |
+| **Reviewer** | Configured judgment model for final review (Hermes default: Claude Opus 4.8; optional secondary adversarial pass from Codex review) | minutes per work block | final correctness judgment, invariant checks, high-stakes adversarial review |
 | **Memory** | the repo: `docs/HANDOFF.md`, `docs/gates/`, git history | permanent | everything; not in the repo = didn't happen |
 | **Human** | you | final | scope, irreversible calls, taste |
 
@@ -228,9 +234,10 @@ generation and delete what the model now does unprompted.
 
 Facts the skill encodes — several correct widespread misinformation:
 
-- **Model slug is `gpt-5.5`**, not `gpt-5.5-codex`; the `-codex`-suffixed line
+- **Hermes default builder slug is `gpt-5.5`**, not `gpt-5.5-codex`; the `-codex`-suffixed line
   ended at gpt-5.3 and is deprecated under ChatGPT sign-in. Pin it explicitly —
-  automations have been reported silently defaulting to older models.
+  automations have been reported silently defaulting to older models. If a repo
+  carries a role-map override, substitute its configured builder model instead.
 - **`codex exec` is non-interactive by design** — `-a/--ask-for-approval` and
   `--search` are TUI-only flags that exec rejects (verified live on 0.139).
   The sandbox flag is the only permission control. Web search is on by
@@ -260,10 +267,13 @@ Canonical dispatch:
 
 ```bash
 codex exec -C <repo> --sandbox workspace-write \
-  -m gpt-5.5 -c model_reasoning_effort="xhigh" \
+  -m <builder-model> -c model_reasoning_effort="xhigh" \
   --json -o .architect/last-run.md \
   "<builder block: PHASE rules + slice spec + frozen gate references>"
 ```
+
+Hermes fork default: set `<builder-model>` to `gpt-5.5` unless the target repo's
+role-map contract overrides it.
 
 Subscription note: ChatGPT-plan quotas are per-5-hour window plus a weekly cap;
 long runs draw on the weekly pool. For unattended overnight loops that must not

@@ -1,11 +1,12 @@
 ---
 name: architect
 description: >
-  Run the Architect Loop: Claude Fable (high effort) is the ARCHITECT — judgment
-  only: arbitration, judging raw evidence against frozen gates, splitting slices
-  into disjoint lanes, kill/continue calls. The BUILDERS are 1-4 parallel
-  GPT-5.5 codex exec agents (xhigh), each in its own git worktree; the architect
-  reviews, merges, and integrates their work. The repo is the memory
+  Run the Architect Loop: the configured Claude Code judgment model (Hermes
+  default: Claude Opus 4.8 at high effort) is the ARCHITECT — judgment only:
+  arbitration, judging raw evidence against frozen gates, splitting slices into
+  disjoint lanes, kill/continue calls. The BUILDERS are 1-4 parallel configured
+  codex exec agents (Hermes default: GPT-5.5 at xhigh), each in its own git
+  worktree; the architect reviews, merges, and integrates their work. The repo is the memory
   (docs/HANDOFF.md + docs/gates/ + docs/lanes/). Use when asked to "architect",
   "run the loop", "next slice", "judge the builder's work", or at the start of a
   work block in a repo using the handoff system.
@@ -14,8 +15,9 @@ effort: high
 
 # Architect
 
-You are the ARCHITECT. GPT-5.5 via the `codex` CLI is the BUILDER. The repo is
-the memory. Your output is judgment and a dispatch — never implementation code.
+You are the ARCHITECT. The configured `codex` CLI builder model (Hermes default:
+`gpt-5.5`) is the BUILDER. The repo is the memory. Your output is judgment and
+a dispatch — never implementation code.
 When you have enough information to act, act.
 
 Full rationale and citations: `DESIGN.md` in this skill's repo. Exact dispatch
@@ -55,6 +57,8 @@ commands and the builder block template: `dispatch.md` next to this file.
 - Read the project's operating docs in authority order: `CLAUDE.md` /
   `AGENTS.md` → `README.md` → architecture docs. Learn the exact verification
   gate (test/lint/typecheck/build commands) from docs or CI config.
+- If the target repo carries `architect-loop.roles.yaml`, read it before
+  specifying or dispatching. Otherwise use the repo/operator defaults.
 - Once per environment: `codex --version` (need ≥ 0.133; older versions and
   flag fallbacks are covered in `dispatch.md`). First dispatch in a new
   environment is a canary — confirm it starts cleanly before fanning out.
