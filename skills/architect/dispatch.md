@@ -7,6 +7,10 @@ are **TUI-only flags — `codex exec` rejects both** (exec is non-interactive
 by design; the sandbox flag is the only permission control); Goal Mode's only
 real subcommands are bare `/goal`, `/goal pause|resume|clear`.
 
+In the Hermes fork, command examples use placeholders like `<builder-model>`.
+Hermes default: `gpt-5.4`. If the target repo carries `architect-loop.roles.yaml`,
+substitute its configured values before dispatch.
+
 **Preflight (once per environment):** run `codex --version`. Need ≥ 0.133.
 On the first dispatch in a new environment, launch ONE canary run and confirm
 it starts cleanly before fanning anything out — CLI flags churn between
@@ -23,7 +27,7 @@ Single-lane slice (dispatch in the main checkout):
 
 ```bash
 codex exec -C <repo-root> --sandbox workspace-write \
-  -m gpt-5.5 -c model_reasoning_effort="xhigh" \
+  -m <builder-model> -c model_reasoning_effort="xhigh" \
   --json -o .architect/last-run.md \
   - < .architect/dispatch-block.md
 ```
@@ -42,7 +46,7 @@ git -C <repo-root> worktree add .architect/wt/<slice>-<NN> \
 
 # write the lane's builder block, then dispatch (background, all lanes parallel)
 codex exec -C <repo-root>/.architect/wt/<slice>-<NN> --sandbox workspace-write \
-  -m gpt-5.5 -c model_reasoning_effort="xhigh" \
+  -m <builder-model> -c model_reasoning_effort="xhigh" \
   --json -o .architect/wt/<slice>-<NN>.last-run.md \
   - < .architect/wt/<slice>-<NN>.block.md
 ```
@@ -72,7 +76,7 @@ conflicting lane and re-spec; don't hand-resolve builder conflicts.
 - Run in the background (multi-hour runs are normal); read
   `.architect/last-run.md` and the repo state afterwards.
 - Pin the model explicitly — automations have been reported silently falling
-  back to older models.
+  back to older models. Hermes default builder model: `gpt-5.4`.
 - Effort: `xhigh` default (based on the cited review-survival data for
   unattended work);
   architect downgrades routine, tightly-specified slices to `"high"`.
@@ -186,7 +190,8 @@ analysis or partial fixes.
 
 ## Builder-side standing setup (one time per machine/repo)
 
-- `~/.codex/config.toml`: `model = "gpt-5.5"`. Parallelism is
+- `~/.codex/config.toml`: `model = "<builder-model>"` (Hermes default:
+  `gpt-5.4`). Parallelism is
   architect-orchestrated worktrees — it does NOT depend on Codex's experimental
   `[features] multi_agent` config. (A lane agent may still use Codex-internal
   subagents for its own intra-lane work if that feature is enabled; optional.)

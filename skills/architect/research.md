@@ -5,6 +5,10 @@ uses Codex as parallel web-research subagents — read-only, live search, on the
 flat-rate subscription — and the architect keeps all judgment: it verifies the
 load-bearing claims and writes the PRD itself.
 
+In the Hermes fork, the command examples below use `<researcher-model>`.
+Hermes default: `gpt-5.4`. If the target repo carries `architect-loop.roles.yaml`,
+substitute `researcher.model` and `researcher.reasoning_effort` from it.
+
 ## Fan out
 
 Decompose the question into 3–5 narrow, NON-OVERLAPPING research questions.
@@ -17,7 +21,7 @@ background:
 
 ```bash
 codex exec -C <repo-root> --sandbox read-only -c web_search="live" \
-  -m gpt-5.5 -c model_reasoning_effort="high" \
+  -m <researcher-model> -c model_reasoning_effort="high" \
   -o .architect/research/<NN>-<topic>.md \
   - < .architect/research/<NN>-<topic>.prompt.md
 ```

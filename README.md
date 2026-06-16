@@ -1,15 +1,18 @@
 # architect-loop
 
-**Claude Fable handles planning and review; GPT-5.5 Codex handles
-implementation and research.** Two Claude Code skills wire that split into a
-repo-centered loop: specs and gates are written first, Codex works in fresh
-contexts, and Fable reviews the evidence before anything is integrated. It runs
-on the subscriptions you already have — no API keys required by default.
+**architect-loop separates judgment from execution.** Upstream used Claude
+Fable for planning/review and GPT-5.5 Codex for implementation/research. In
+this Hermes fork, those roles are configurable; the current defaults are
+**Claude Opus 4.8** for architect/reviewer and **GPT-5.4** for
+builder/researcher. Two Claude Code skills wire that split into a repo-centered
+loop: specs and gates are written first, Codex works in fresh contexts, and the
+architect reviews the evidence before anything is integrated. It runs on the
+subscriptions you already have — no API keys required by default.
 
 ## Install (30 seconds)
 
 ```bash
-git clone https://github.com/DanMcInerney/architect-loop
+git clone https://github.com/juanfpinzon/architect-loop
 cd architect-loop && ./install.sh        # Windows: .\install.ps1
 npm i -g @openai/codex@latest            # the builder (Codex CLI >= 0.133)
 ```
@@ -17,6 +20,10 @@ npm i -g @openai/codex@latest            # the builder (Codex CLI >= 0.133)
 `./install.sh --project` installs to the current repo only instead of
 globally. You need [Claude Code](https://claude.com/claude-code) on any paid
 plan and the Codex CLI signed into a ChatGPT plan.
+
+This fork still installs as a normal Claude Code skill bundle on a laptop.
+The Hermes-specific docs are operating guidance layered on top, not a runtime
+dependency.
 
 ## Use (two commands)
 
@@ -33,9 +40,9 @@ dispatch builders. `/architect-research` is for when you're still deciding
 
 ![/architect flow](assets/architect-flow.png)
 
-One short Fable session per work block — judgment only, it never writes code:
+One short architect session per work block — judgment only, it never writes code:
 
-- **Spec + gates first.** Fable specs a one-PR slice, splits it into 1–4
+- **Spec + gates first.** The architect specs a one-PR slice, splits it into 1–4
   lanes whose file sets are checked for overlap, and commits the acceptance gates to
   `docs/gates/` *before* any builder starts. Gates are read-only; a builder
   edit to a gate file fails the slice automatically.
@@ -43,7 +50,7 @@ One short Fable session per work block — judgment only, it never writes code:
   each in its own git worktree. Builders must argue with the spec before
   building (silent compliance = defect), build only their declared files,
   and report raw results — they do not have commit access in the sandbox.
-- **Fable judges and integrates.** It runs the gate commands itself (builder
+- **The architect judges and integrates.** It runs the gate commands itself (builder
   claims are hearsay), reads the diff against the spec's intent (passing
   tests ≠ mergeable work), then commits and merges passing lanes. Judgment
   happens in a fresh session because the cited evidence favors fresh-context
@@ -65,7 +72,7 @@ taxonomy:
 - **A cheap Codex scout maps the topic** (~10 searches): canonical
   terminology, the load-bearing systems and papers, the named people, the
   topic's natural fault lines. Skipped for comparisons and fact-finds.
-- **Fable designs 3–6 topic-specific lanes** from the scout's map, drawing
+- **The architect designs 3–6 topic-specific lanes** from the scout's map, drawing
   per-source-class tactics from a library (academic citation snowballing,
   dependents-not-stars repo evidence, emerging-vs-hype gating, production
   pattern mining, expert tracking) — checked for overlap and gaps before
@@ -74,7 +81,7 @@ taxonomy:
   subjects per lane, saturation stop, strict findings discipline (URL + date
   + quote + confidence tag; NOT FOUND beats inference; no recommendations).
   Expert opinion runs as a second wave, roster-seeded by the first.
-- **Fable verifies and writes.** ≥2 independent sources per load-bearing
+- **The architect verifies and writes.** ≥2 independent sources per load-bearing
   claim, adversarial falsification searches, citations only from URLs
   actually fetched — then one author writes one decision-oriented report.
   Gathering parallelizes; synthesis never does.
@@ -108,6 +115,8 @@ upstream's "the repo is the only memory" rule verbatim.
 - **Notion** stays the polished human-facing documentation layer
 - **repo-local architect-loop files** stay slice-local execution artifacts
 - **gh-watchdog** stays the downstream PR safety net
+- **model roles** stay configurable, with Hermes defaults documented in
+  [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md)
 
 The architecture and memory-routing contract for this fork lives in
 [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md).
@@ -117,6 +126,8 @@ The architecture and memory-routing contract for this fork lives in
 | File | What it is |
 |---|---|
 | [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md) | Hermes-native owner-system and memory-routing contract for this fork |
+| [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md) | Hermes-native role-map contract, defaults, and configuration surface |
+| [architect-loop.roles.example.yaml](architect-loop.roles.example.yaml) | Example project-level role-map template for future pilot repos |
 | [DESIGN.md](DESIGN.md) | The design document — 12 enforced rules, failure-mode table, cited sources |
 | [skills/architect/SKILL.md](skills/architect/SKILL.md) | The architect role: hard rules + procedure |
 | [skills/architect/dispatch.md](skills/architect/dispatch.md) | Verified `codex exec` commands, builder block, worktree fan-out, stall triage |
@@ -133,7 +144,7 @@ on your ChatGPT plan.
 
 **What does a run cost?** Builder/researcher runs draw on your ChatGPT
 plan's 5-hour and weekly quotas; a multi-hour run is a meaningful fraction
-of a weekly window. Fable's architect sessions are minutes, not hours.
+of a weekly window. Architect/reviewer sessions are minutes, not hours.
 
 **What if a builder wrecks things?** Nothing reaches a branch until the
 architect's tamper, boundary, and gate checks pass — worktrees are

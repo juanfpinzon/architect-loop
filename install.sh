@@ -21,3 +21,6 @@ if command -v codex >/dev/null 2>&1; then
 else
     echo "Codex CLI not found - install the builder with: npm i -g @openai/codex@latest"
 fi
+
+echo "Hermes fork role-map defaults and config surface: HERMES_MODEL_ROLES.md"
+echo "Example project template: architect-loop.roles.example.yaml"
