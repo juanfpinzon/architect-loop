@@ -8,7 +8,7 @@ by design; the sandbox flag is the only permission control); Goal Mode's only
 real subcommands are bare `/goal`, `/goal pause|resume|clear`.
 
 In the Hermes fork, command examples use placeholders like `<builder-model>`.
-Hermes default: `gpt-5.5`. If the target repo carries `architect-loop.roles.yaml`,
+Hermes default: `gpt-5.4`. If the target repo carries `architect-loop.roles.yaml`,
 substitute its configured values before dispatch.
 
 **Preflight (once per environment):** run `codex --version`. Need ≥ 0.133.
@@ -76,7 +76,7 @@ conflicting lane and re-spec; don't hand-resolve builder conflicts.
 - Run in the background (multi-hour runs are normal); read
   `.architect/last-run.md` and the repo state afterwards.
 - Pin the model explicitly — automations have been reported silently falling
-  back to older models. Hermes default builder model: `gpt-5.5`.
+  back to older models. Hermes default builder model: `gpt-5.4`.
 - Effort: `xhigh` default (based on the cited review-survival data for
   unattended work);
   architect downgrades routine, tightly-specified slices to `"high"`.
@@ -191,7 +191,7 @@ analysis or partial fixes.
 ## Builder-side standing setup (one time per machine/repo)
 
 - `~/.codex/config.toml`: `model = "<builder-model>"` (Hermes default:
-  `gpt-5.5`). Parallelism is
+  `gpt-5.4`). Parallelism is
   architect-orchestrated worktrees — it does NOT depend on Codex's experimental
   `[features] multi_agent` config. (A lane agent may still use Codex-internal
   subagents for its own intra-lane work if that feature is enabled; optional.)

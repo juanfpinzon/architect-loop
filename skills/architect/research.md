@@ -6,7 +6,7 @@ flat-rate subscription — and the architect keeps all judgment: it verifies the
 load-bearing claims and writes the PRD itself.
 
 In the Hermes fork, the command examples below use `<researcher-model>`.
-Hermes default: `gpt-5.5`. If the target repo carries `architect-loop.roles.yaml`,
+Hermes default: `gpt-5.4`. If the target repo carries `architect-loop.roles.yaml`,
 substitute `researcher.model` and `researcher.reasoning_effort` from it.
 
 ## Fan out

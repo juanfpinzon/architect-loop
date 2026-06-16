@@ -7,7 +7,7 @@ architect:
 
 builder:
   runtime: codex-exec
-  model: gpt-5.5
+  model: gpt-5.4
   reasoning_effort: xhigh
 
 reviewer:
@@ -15,11 +15,11 @@ reviewer:
   model: "Claude Opus 4.8"
   effort: high
   optional_secondary_runtime: codex-review
-  optional_secondary_model: gpt-5.5
+  optional_secondary_model: gpt-5.4
 
 researcher:
   runtime: codex-exec
-  model: gpt-5.5
+  model: gpt-5.4
   reasoning_effort: high
 
 canary:

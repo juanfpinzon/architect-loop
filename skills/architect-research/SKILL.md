@@ -77,7 +77,7 @@ codex exec --sandbox read-only -c web_search="live" \
   - < .architect/research/<NN>-<lane>.prompt.md
 ```
 
-Hermes fork default researcher model: `gpt-5.5`. If the target repo carries
+Hermes fork default researcher model: `gpt-5.4`. If the target repo carries
 `architect-loop.roles.yaml`, use its `researcher.model` and
 `researcher.reasoning_effort` values when dispatching lanes.
 

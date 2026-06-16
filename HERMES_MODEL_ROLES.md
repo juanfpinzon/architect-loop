@@ -26,25 +26,25 @@ Until a pilot repo proves otherwise, this fork should assume:
 | Role | Default runtime | Default model |
 |---|---|---|
 | **Architect** | Claude Code | **Claude Opus 4.8** |
-| **Builder** | Codex CLI (`codex exec`) | **GPT-5.5** |
+| **Builder** | Codex CLI (`codex exec`) | **GPT-5.4** |
 | **Reviewer** | Claude Code | **Claude Opus 4.8** |
-| **Researcher** | Codex CLI (`codex exec` read-only) | **GPT-5.5** |
+| **Researcher** | Codex CLI (`codex exec` read-only) | **GPT-5.4** |
 
 ### Review note
 The **reviewer** default is Opus 4.8 because the Hermes operating model wants the final judgment layer to stay with the architect/reviewer path.
 
 An optional adversarial pass from Codex (`codex review --base ...`) is still encouraged for high-stakes slices, but it is a **secondary review lane**, not the owner of the final verdict.
 
-## Hardcoded assumption inventory
-These are the places where the current repo encodes a fixed model pairing and therefore needs either neutral wording or explicit default-language:
+## Hardcoded assumption inventory (pre-adaptation)
+These were the places where the repo encoded a fixed model pairing before HER-226 normalized the role-map contract:
 
-| File | Current hardcoded assumption | Required treatment |
+| File | Prior hardcoded assumption | Treatment in HER-226 |
 |---|---|---|
 | `README.md` | Fable plans/reviews, GPT-5.5 implements/researches | Convert to configurable role language + Hermes defaults |
 | `DESIGN.md` | intro, roles table, and command examples name specific models as if permanent | Preserve the source-backed rationale, but distinguish evidence from configurable defaults |
 | `skills/architect/SKILL.md` | architect and builder named as fixed model choices | Change to configured-role wording with Hermes defaults |
 | `skills/architect/dispatch.md` | dispatch examples use `-m gpt-5.5` directly | Keep the verified syntax, but make the model value configurable |
-| `skills/architect/research.md` | research examples pin GPT-5.5 | Make the researcher model configurable; keep GPT-5.5 as default |
+| `skills/architect/research.md` | research examples pin GPT-5.5 | Make the researcher model configurable and document the Hermes default explicitly |
 | `skills/architect-research/SKILL.md` | research fan-out examples pin GPT-5.5 | Same treatment as above |
 | `install.sh` | mentions Codex builder only, no role-map guidance | Add pointer to the role-map contract and example template |
 
@@ -76,7 +76,7 @@ architect:
 
 builder:
   runtime: codex-exec
-  model: gpt-5.5
+  model: gpt-5.4
   reasoning_effort: xhigh
 
 reviewer:
@@ -84,11 +84,11 @@ reviewer:
   model: "Claude Opus 4.8"
   effort: high
   optional_secondary_runtime: codex-review
-  optional_secondary_model: gpt-5.5
+  optional_secondary_model: gpt-5.4
 
 researcher:
   runtime: codex-exec
-  model: gpt-5.5
+  model: gpt-5.4
   reasoning_effort: high
 
 canary:
@@ -189,4 +189,4 @@ For the Hermes fork, the architecture is **role-stable but model-configurable**.
 
 - The split between architect, builder, reviewer, and researcher stays.
 - The specific model pairings become defaults, not hardcoded doctrine.
-- The Hermes default pairing is **Opus 4.8 for architect/reviewer** and **GPT-5.5 for builder/researcher**.
+- The Hermes default pairing is **Opus 4.8 for architect/reviewer** and **GPT-5.4 for builder/researcher**.

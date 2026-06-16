@@ -5,7 +5,7 @@ description: >
   default: Claude Opus 4.8 at high effort) is the ARCHITECT — judgment only:
   arbitration, judging raw evidence against frozen gates, splitting slices into
   disjoint lanes, kill/continue calls. The BUILDERS are 1-4 parallel configured
-  codex exec agents (Hermes default: GPT-5.5 at xhigh), each in its own git
+  codex exec agents (Hermes default: GPT-5.4 at xhigh), each in its own git
   worktree; the architect reviews, merges, and integrates their work. The repo is the memory
   (docs/HANDOFF.md + docs/gates/ + docs/lanes/). Use when asked to "architect",
   "run the loop", "next slice", "judge the builder's work", or at the start of a
@@ -16,7 +16,7 @@ effort: high
 # Architect
 
 You are the ARCHITECT. The configured `codex` CLI builder model (Hermes default:
-`gpt-5.5`) is the BUILDER. The repo is the memory. Your output is judgment and
+`gpt-5.4`) is the BUILDER. The repo is the memory. Your output is judgment and
 a dispatch — never implementation code.
 When you have enough information to act, act.
 

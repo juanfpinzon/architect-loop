@@ -64,7 +64,7 @@ end-to-end
 | Role | Who | Effort | Owns |
 |---|---|---|---|
 | **Architect** | Configured Claude Code judgment model (upstream evidence base: Claude Fable 5; Hermes default: Claude Opus 4.8) | minutes per work block | arbitration, judging raw evidence against frozen gates, next-slice specs, kill/continue calls |
-| **Builder** | Configured `codex exec` builder model (upstream evidence base and Hermes default: GPT-5.5; `model_reasoning_effort: xhigh` default) | hours per slice | implementation, lane agents, raw-results reporting |
+| **Builder** | Configured `codex exec` builder model (upstream evidence base: GPT-5.5; Hermes default: GPT-5.4; `model_reasoning_effort: xhigh` default) | hours per slice | implementation, lane agents, raw-results reporting |
 | **Reviewer** | Configured judgment model for final review (Hermes default: Claude Opus 4.8; optional secondary adversarial pass from Codex review) | minutes per work block | final correctness judgment, invariant checks, high-stakes adversarial review |
 | **Memory** | the repo: `docs/HANDOFF.md`, `docs/gates/`, git history | permanent | everything; not in the repo = didn't happen |
 | **Human** | you | final | scope, irreversible calls, taste |
@@ -234,7 +234,7 @@ generation and delete what the model now does unprompted.
 
 Facts the skill encodes — several correct widespread misinformation:
 
-- **Hermes default builder slug is `gpt-5.5`**, not `gpt-5.5-codex`; the `-codex`-suffixed line
+- **Hermes default builder slug is `gpt-5.4`**, not `gpt-5.5-codex`; the `-codex`-suffixed line
   ended at gpt-5.3 and is deprecated under ChatGPT sign-in. Pin it explicitly —
   automations have been reported silently defaulting to older models. If a repo
   carries a role-map override, substitute its configured builder model instead.
@@ -272,7 +272,7 @@ codex exec -C <repo> --sandbox workspace-write \
   "<builder block: PHASE rules + slice spec + frozen gate references>"
 ```
 
-Hermes fork default: set `<builder-model>` to `gpt-5.5` unless the target repo's
+Hermes fork default: set `<builder-model>` to `gpt-5.4` unless the target repo's
 role-map contract overrides it.
 
 Subscription note: ChatGPT-plan quotas are per-5-hour window plus a weekly cap;

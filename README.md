@@ -3,7 +3,7 @@
 **architect-loop separates judgment from execution.** Upstream used Claude
 Fable for planning/review and GPT-5.5 Codex for implementation/research. In
 this Hermes fork, those roles are configurable; the current defaults are
-**Claude Opus 4.8** for architect/reviewer and **GPT-5.5** for
+**Claude Opus 4.8** for architect/reviewer and **GPT-5.4** for
 builder/researcher. Two Claude Code skills wire that split into a repo-centered
 loop: specs and gates are written first, Codex works in fresh contexts, and the
 architect reviews the evidence before anything is integrated. It runs on the
@@ -12,7 +12,7 @@ subscriptions you already have — no API keys required by default.
 ## Install (30 seconds)
 
 ```bash
-git clone https://github.com/DanMcInerney/architect-loop
+git clone https://github.com/juanfpinzon/architect-loop
 cd architect-loop && ./install.sh        # Windows: .\install.ps1
 npm i -g @openai/codex@latest            # the builder (Codex CLI >= 0.133)
 ```
@@ -20,6 +20,10 @@ npm i -g @openai/codex@latest            # the builder (Codex CLI >= 0.133)
 `./install.sh --project` installs to the current repo only instead of
 globally. You need [Claude Code](https://claude.com/claude-code) on any paid
 plan and the Codex CLI signed into a ChatGPT plan.
+
+This fork still installs as a normal Claude Code skill bundle on a laptop.
+The Hermes-specific docs are operating guidance layered on top, not a runtime
+dependency.
 
 ## Use (two commands)
 
