@@ -25,6 +25,13 @@ This fork still installs as a normal Claude Code skill bundle on a laptop.
 The Hermes-specific docs are operating guidance layered on top, not a runtime
 dependency.
 
+There are two supported ways to use this fork:
+- **Portable mode** — plain Claude Code + Codex on a laptop
+- **Hermes-native mode** — the same loop with Linear, shared vault, Notion,
+  and gh-watchdog layered on top
+
+See [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md) for the exact split.
+
 ## Use (two commands)
 
 ```
@@ -118,6 +125,9 @@ upstream's "the repo is the only memory" rule verbatim.
 - **model roles** stay configurable, with Hermes defaults documented in
   [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md)
 
+The dual-mode usage contract for this fork lives in
+[HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md).
+
 The architecture and memory-routing contract for this fork lives in
 [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md).
 
@@ -125,6 +135,7 @@ The architecture and memory-routing contract for this fork lives in
 
 | File | What it is |
 |---|---|
+| [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md) | Portable-mode vs Hermes-native operating contract and usage flow |
 | [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md) | Hermes-native owner-system and memory-routing contract for this fork |
 | [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md) | Hermes-native role-map contract, defaults, and configuration surface |
 | [architect-loop.roles.example.yaml](architect-loop.roles.example.yaml) | Example project-level role-map template for future pilot repos |
