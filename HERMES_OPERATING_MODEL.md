@@ -3,8 +3,8 @@
 ## Purpose
 This document explains how the Hermes fork of `architect-loop` should be used in **two explicit modes**:
 
-1. **Portable mode** — plain Claude Code + Codex on a normal laptop
-2. **Hermes-native mode** — the same core loop plus Linear, shared vault, Notion, and gh-watchdog
+1. **Portable mode** — the upstream architect loop run from Claude Code on a normal laptop, starting from a Linear ticket and ending at a GitHub PR
+2. **Hermes-native mode** — the same core loop, but Hermes may proactively source the Linear ticket and operate inside the broader Linear / vault / Notion / gh-watchdog stack
 
 This split is load-bearing.
 
@@ -16,39 +16,48 @@ The Hermes stack adds operating discipline and surrounding systems, but it must 
 | Dimension | Portable mode | Hermes-native mode |
 |---|---|---|
 | Primary user | Solo developer on laptop | Hermes working inside Juan's operating stack |
-| Required tools | Claude Code, Codex CLI, git | Claude Code / Hermes, Codex CLI, git, Linear, GitHub, shared vault, Notion as needed |
+| Required tools | Claude Code, Codex CLI, git, Linear, GitHub | Claude Code / Hermes, Codex CLI, git, Linear, GitHub, shared vault, Notion as needed |
 | Install target | `~/.claude/skills` or `./.claude/skills` | Same skill install path; Hermes overlays sit outside the repo |
-| Source of task truth | repo + human | **Linear** |
-| Durable cross-session memory | repo files / git history | **shared vault** |
-| Human-facing synthesis | ad hoc notes | **Notion** |
-| Review safety net | human review / normal PR review | **GitHub + gh-watchdog** |
-| Runtime dependency on Hermes | **none** | optional operating layer |
+| How work starts | human points Claude / Hermes to a **Linear ticket** | human or Hermes selects a **Linear ticket** |
+| Source of task truth | **Linear ticket** | **Linear ticket** |
+| Durable cross-session memory | repo files, PR history, Linear comments | **shared vault** |
+| Human-facing synthesis | PR + Linear update | **Notion** when needed |
+| Review safety net | **GitHub + gh-watchdog** | **GitHub + gh-watchdog** |
+| Runtime dependency on Hermes | **none** for the loop itself | Hermes is the operating surface and may proactively orchestrate |
 
 ## Portable mode
 
 Portable mode is the **minimum supported use case** for this fork.
 
 If you clone the repo to a laptop, install the skills, and sign into Claude Code + Codex, the workflow should still work.
+The important correction is that **portable does not mean disconnected from Linear or watchdog**.
+It means the loop can run from Claude Code on a laptop without requiring Hermes-native automation around it.
 
 ### Minimum setup
 1. Clone the fork.
 2. Run `./install.sh` or `./install.sh --project`.
 3. Install Codex CLI and sign in.
 4. Optionally copy `architect-loop.roles.example.yaml` to `architect-loop.roles.yaml` and set your preferred models.
-5. Use `/architect` or `/architect-research` from Claude Code.
+5. Start from a **Linear ticket** that already contains the slice details.
+6. Use `/architect` or `/architect-research` from Claude Code.
 
 ### What portable mode assumes
-- the repo is the working execution surface
-- the human decides scope and priority directly
-- the developer may or may not use project-management tooling outside the repo
-- no Linear, vault, or watchdog integration is required
+- the repo is still the working execution surface
+- the work starts from a **Linear ticket**, even when the loop is run from a laptop
+- the human points Claude / Hermes to that ticket directly rather than relying on proactive Hermes orchestration
+- **Claude Opus 4.8** is the default architect/reviewer for slice design, frozen gates, gate runs, judgment, PR writeup, and writing back to Linear
+- **GPT-5.4** is the default builder for implementation lanes
+- after the PR is raised, **gh-watchdog** performs the final review pass
+- shared vault and Notion are optional surroundings, not required runtime dependencies
 
 ### Portable mode rule
-If a workflow step depends on Hermes infrastructure, it is **not required** for portable mode unless the docs explicitly mark it as optional.
+Portable means the loop is runnable from Claude Code on a laptop.
+It does **not** mean Linear disappears, PR review disappears, or gh-watchdog disappears.
+The required difference is only that portable mode does not rely on Hermes-native proactive orchestration or broader memory-promotion behavior.
 
 ## Hermes-native mode
 
-Hermes-native mode keeps the same architect/builder loop but layers it into Juan's broader operating stack.
+Hermes-native mode keeps the same architect/builder loop and the same default model pairing, but layers it into Juan's broader operating stack.
 
 ### Additional owner systems
 - **Linear** — execution truth
@@ -69,6 +78,7 @@ These systems are **owner systems around the loop**, not replacements for the lo
 When Hermes uses architect-loop for heavy development work, the recommended sequence is:
 
 1. **Choose the work in Linear**
+   - either the human points Hermes to the ticket, or Hermes identifies the ticket proactively
    - confirm the slice deserves architect-loop rather than a normal inline coding session
    - ensure the issue description is good enough to support a scoped slice
 
@@ -82,16 +92,17 @@ When Hermes uses architect-loop for heavy development work, the recommended sequ
    - keep execution evidence in repo-local artifacts
 
 4. **Run architect-loop**
-   - architect judges and dispatches
-   - builders or researchers execute in isolated contexts
+   - Claude / architect judges and dispatches
+   - Codex builders execute in isolated contexts with the configured builder model
    - repo files capture the slice-local evidence
 
-5. **Open the PR**
+5. **Open the PR and write back to Linear**
    - GitHub becomes the review surface
-   - Linear may link the PR, but should not duplicate the execution record
+   - the PR should be well documented
+   - the architect path writes the completed work back to the Linear ticket
 
 6. **Let gh-watchdog review downstream**
-   - watchdog acts on the PR and surfaces adversarial review findings
+   - watchdog acts after the PR exists and performs the final review pass
    - follow-up work lands back in Linear if anything new is required
 
 7. **Close the loop**
@@ -149,9 +160,10 @@ Do **not** use architect-loop when:
 This fork is successful only if both of these remain true:
 
 1. **A laptop user can install and run it with Claude Code + Codex alone.**
-2. **Hermes can layer its operating systems on top without changing the runtime surface.**
+2. **That same laptop-driven loop can still start from a Linear ticket and end at a watchdog-reviewed PR.**
+3. **Hermes can layer its broader operating systems on top without changing the core runtime surface.**
 
-If a future change breaks condition 1, it should be treated as a regression.
+If a future change breaks condition 1 or 2, it should be treated as a regression.
 
 ## Relationship to other docs
 

@@ -132,20 +132,21 @@ The dual-mode usage contract for this fork lives in
 
 ![](assets/portable-mode-flow.png)
 
-Portable mode keeps the loop laptop-friendly: **you** choose the slice,
-**Claude Code** runs `/architect`, **Codex** builds in isolated lanes, and
-**you** review or merge the result. No Linear, shared vault, Notion, or
-watchdog dependency is required.
+Portable mode keeps the loop laptop-friendly, but it still starts from a
+**Linear ticket**. You point Claude / Hermes to the slice, **Claude Opus 4.8**
+handles slice design, frozen gates, gate runs, judgment, PR writeup, and
+Linear writeback, **GPT-5.4** handles the parallel build lanes, and
+**gh-watchdog** performs the final PR review after the PR is raised.
 
 ### Hermes-native mode workflow
 
 ![](assets/hermes-native-flow.png)
 
-Hermes-native mode preserves the same architect/builder split, but adds the
-Hermes owner systems around it: **Linear** owns execution state, **Hermes**
-specs and judges the slice, **Codex** builds in parallel, **GitHub +
-gh-watchdog** guard the PR boundary, and the **repo / vault / Notion** each
-keep their own lane.
+Hermes-native mode keeps the **same upstream architect loop and the same
+model defaults**, but Hermes may proactively surface the Linear ticket and run
+it inside the broader operating stack. The runtime path is still: **Linear
+Ticket → Claude architect/judge → Codex builders → PR → gh-watchdog final
+review**.
 
 The editable Excalidraw source files for these diagrams live in
 [`assets/portable-mode-flow.excalidraw`](assets/portable-mode-flow.excalidraw)

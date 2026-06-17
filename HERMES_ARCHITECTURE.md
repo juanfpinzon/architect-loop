@@ -4,8 +4,9 @@
 This fork adapts `architect-loop` to the Hermes operating model.
 
 This document applies to the **Hermes-native mode** described in
-`HERMES_OPERATING_MODEL.md`. Portable laptop use can ignore the owner-system
-rules here unless those external systems are actually in play.
+`HERMES_OPERATING_MODEL.md`. Portable laptop use can ignore most of the
+owner-system rules here, but still inherits the shared Linear-ticket and
+GitHub-PR boundary described in that operating-model doc.
 
 Upstream assumes **the repo is the only memory**. That is not true in our stack.
 
