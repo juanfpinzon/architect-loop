@@ -328,16 +328,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "Opus 4.8 default\nspec + design slice\nfreeze gates",
+      "text": "Opus 4.8 default\ninterview-me • idea-refine\nspec-driven-development\nfreeze gates",
       "fontSize": 18,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Opus 4.8 default\nspec + design slice\nfreeze gates",
+      "originalText": "Opus 4.8 default\ninterview-me • idea-refine\nspec-driven-development\nfreeze gates",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "Opus 4.8 default\nspec + design slice\nfreeze gates"
+      "rawText": "Opus 4.8 default\ninterview-me • idea-refine\nspec-driven-development\nfreeze gates"
     },
     {
       "id": "box_35",
@@ -431,16 +431,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "GPT-5.4 default\nbuilds, in parallel\nworktree 1\nworktree 2\nworktree N",
+      "text": "GPT-5.4 default\nincremental-implementation\nbuild in thin steps\nverify per lane",
       "fontSize": 18,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "GPT-5.4 default\nbuilds, in parallel\nworktree 1\nworktree 2\nworktree N",
+      "originalText": "GPT-5.4 default\nincremental-implementation\nbuild in thin steps\nverify per lane",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "GPT-5.4 default\nbuilds, in parallel\nworktree 1\nworktree 2\nworktree N"
+      "rawText": "GPT-5.4 default\nincremental-implementation\nbuild in thin steps\nverify per lane"
     },
     {
       "id": "box_38",
@@ -534,16 +534,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "Opus 4.8 default\nruns gates\njudges\nopens PR\nupdates Linear",
+      "text": "Opus 4.8 default\ncode-review-and-quality\ncode-simplification\nruns gates + judges\nopens PR + updates Linear",
       "fontSize": 18,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Opus 4.8 default\nruns gates\njudges\nopens PR\nupdates Linear",
+      "originalText": "Opus 4.8 default\ncode-review-and-quality\ncode-simplification\nruns gates + judges\nopens PR + updates Linear",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "Opus 4.8 default\nruns gates\njudges\nopens PR\nupdates Linear"
+      "rawText": "Opus 4.8 default\ncode-review-and-quality\ncode-simplification\nruns gates + judges\nopens PR + updates Linear"
     },
     {
       "id": "box_41",
@@ -955,16 +955,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "same runtime loop, but Hermes may proactively choose the Linear ticket before Claude I begins",
+      "text": "Karpathy-guidelines across all stages\nsame runtime loop; Hermes may proactively choose the Linear ticket before Claude I begins",
       "fontSize": 20,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "same runtime loop, but Hermes may proactively choose the Linear ticket before Claude I begins",
+      "originalText": "Karpathy-guidelines across all stages\nsame runtime loop; Hermes may proactively choose the Linear ticket before Claude I begins",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "same runtime loop, but Hermes may proactively choose the Linear ticket before Claude I begins"
+      "rawText": "Karpathy-guidelines across all stages\nsame runtime loop; Hermes may proactively choose the Linear ticket before Claude I begins"
     }
   ],
   "appState": {

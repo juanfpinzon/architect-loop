@@ -122,16 +122,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "point Hermes to\nthe ticket",
+      "text": "point Claude / Hermes to\nthe ticket",
       "fontSize": 22,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "point Hermes to\nthe ticket",
+      "originalText": "point Claude / Hermes to\nthe ticket",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "point Hermes to\nthe ticket"
+      "rawText": "point Claude / Hermes to\nthe ticket"
     },
     {
       "id": "box_4",
@@ -328,16 +328,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "Opus 4.8 default\nspec + design slice\nfreeze gates",
+      "text": "Opus 4.8 default\ninterview-me • idea-refine\nspec-driven-development\nfreeze gates",
       "fontSize": 18,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Opus 4.8 default\nspec + design slice\nfreeze gates",
+      "originalText": "Opus 4.8 default\ninterview-me • idea-refine\nspec-driven-development\nfreeze gates",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "Opus 4.8 default\nspec + design slice\nfreeze gates"
+      "rawText": "Opus 4.8 default\ninterview-me • idea-refine\nspec-driven-development\nfreeze gates"
     },
     {
       "id": "box_10",
@@ -431,16 +431,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "GPT-5.4 default\nbuilds, in parallel\nworktree 1\nworktree 2\nworktree N",
+      "text": "GPT-5.4 default\nincremental-implementation\nbuild in thin steps\nverify per lane",
       "fontSize": 18,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "GPT-5.4 default\nbuilds, in parallel\nworktree 1\nworktree 2\nworktree N",
+      "originalText": "GPT-5.4 default\nincremental-implementation\nbuild in thin steps\nverify per lane",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "GPT-5.4 default\nbuilds, in parallel\nworktree 1\nworktree 2\nworktree N"
+      "rawText": "GPT-5.4 default\nincremental-implementation\nbuild in thin steps\nverify per lane"
     },
     {
       "id": "box_13",
@@ -534,16 +534,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "Opus 4.8 default\nruns gates\njudges\nopens PR\nupdates Linear",
+      "text": "Opus 4.8 default\ncode-review-and-quality\ncode-simplification\nruns gates + judges\nopens PR + updates Linear",
       "fontSize": 18,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Opus 4.8 default\nruns gates\njudges\nopens PR\nupdates Linear",
+      "originalText": "Opus 4.8 default\ncode-review-and-quality\ncode-simplification\nruns gates + judges\nopens PR + updates Linear",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "Opus 4.8 default\nruns gates\njudges\nopens PR\nupdates Linear"
+      "rawText": "Opus 4.8 default\ncode-review-and-quality\ncode-simplification\nruns gates + judges\nopens PR + updates Linear"
     },
     {
       "id": "box_16",
@@ -955,16 +955,16 @@
       "updated": 0,
       "link": null,
       "locked": false,
-      "text": "Linear ticket -> Claude I -> Codex builders -> Claude II -> PR -> watchdog",
+      "text": "Karpathy-guidelines across all stages\nLinear ticket -> Claude I -> Codex builders -> Claude II -> PR -> watchdog",
       "fontSize": 20,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Linear ticket -> Claude I -> Codex builders -> Claude II -> PR -> watchdog",
+      "originalText": "Karpathy-guidelines across all stages\nLinear ticket -> Claude I -> Codex builders -> Claude II -> PR -> watchdog",
       "autoResize": true,
       "lineHeight": 1.25,
-      "rawText": "Linear ticket -> Claude I -> Codex builders -> Claude II -> PR -> watchdog"
+      "rawText": "Karpathy-guidelines across all stages\nLinear ticket -> Claude I -> Codex builders -> Claude II -> PR -> watchdog"
     }
   ],
   "appState": {
