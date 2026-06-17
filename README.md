@@ -128,6 +128,29 @@ upstream's "the repo is the only memory" rule verbatim.
 The dual-mode usage contract for this fork lives in
 [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md).
 
+### Portable mode workflow
+
+![](assets/portable-mode-flow.png)
+
+Portable mode keeps the loop laptop-friendly: **you** choose the slice,
+**Claude Code** runs `/architect`, **Codex** builds in isolated lanes, and
+**you** review or merge the result. No Linear, shared vault, Notion, or
+watchdog dependency is required.
+
+### Hermes-native mode workflow
+
+![](assets/hermes-native-flow.png)
+
+Hermes-native mode preserves the same architect/builder split, but adds the
+Hermes owner systems around it: **Linear** owns execution state, **Hermes**
+specs and judges the slice, **Codex** builds in parallel, **GitHub +
+gh-watchdog** guard the PR boundary, and the **repo / vault / Notion** each
+keep their own lane.
+
+The editable Excalidraw source files for these diagrams live in
+[`assets/portable-mode-flow.excalidraw`](assets/portable-mode-flow.excalidraw)
+and [`assets/hermes-native-flow.excalidraw`](assets/hermes-native-flow.excalidraw).
+
 The architecture and memory-routing contract for this fork lives in
 [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md).
 
