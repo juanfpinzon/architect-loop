@@ -89,17 +89,24 @@ When Hermes uses architect-loop for heavy development work, the recommended sequ
 3. **Spec the slice in the repo**
    - create or update the PRD/spec
    - this is the **Claude I** stage
+   - preferred skill stack: `interview-me` if the ticket is ambiguous,
+     `idea-refine` if multiple slice shapes are viable,
+     `spec-driven-development` for the final slice contract
    - freeze gates in repo files before builder work starts
    - keep execution evidence in repo-local artifacts
 
 4. **Run architect-loop**
    - Claude I hands the frozen slice to Codex
    - Codex builders execute in isolated contexts with the configured builder model
+   - builders should follow `incremental-implementation`: thin increments,
+     verify each meaningful step, avoid speculative abstractions
    - repo files capture the slice-local evidence
 
 5. **Return to Claude II for judgment and PR prep**
    - Claude II runs the gates against the built result
    - Claude II judges whether the slice is ready
+   - preferred review stack: `code-review-and-quality` first,
+     `code-simplification` second once correctness is established
    - Claude II prepares the PR and writes back to the Linear ticket
 
 6. **Let gh-watchdog review downstream**
@@ -171,6 +178,7 @@ If a future change breaks condition 1 or 2, it should be treated as a regression
 
 - `README.md` — concise entry point and install/use summary
 - `HERMES_ARCHITECTURE.md` — owner-system and memory-routing contract for Hermes-native mode
+- `HERMES_SKILL_ALIGNMENT.md` — Karpathy-guidelines philosophy and phase skill stack
 - `HERMES_MODEL_ROLES.md` — role map and model configuration surface
 - `architect-loop.roles.example.yaml` — project-level role-map template
 

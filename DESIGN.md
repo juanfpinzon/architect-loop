@@ -1,13 +1,19 @@
 # DESIGN — The Architect Loop v2
 
 **A source-backed design for a Claude Code harness skill in which judgment and
-execution are separated, with the repo as the only memory.**
+execution are separated, with the repo as the only memory in the upstream
+evidence base.**
 
 The upstream evidence base in this document uses **Claude Fable 5** as the
 architect/orchestrator example and **GPT-5.5 via Codex CLI** as the
 builder/researcher example. In the Hermes fork, the role map is configurable;
 see [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md) for the current defaults and
-proposed config surface.
+proposed config surface. The Hermes fork also layers two additional contracts
+on top of this evidence doc: [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md)
+defines the portable-vs-native runtime split, and
+[HERMES_SKILL_ALIGNMENT.md](HERMES_SKILL_ALIGNMENT.md) defines the preferred
+Karpathy-guidelines philosophy plus the Claude I / Codex / Claude II skill
+stack.
 
 Researched June 2026 from Anthropic engineering posts, the official Fable 5 and
 Codex CLI documentation, and widely used community harness skills. Prescriptive
@@ -68,6 +74,25 @@ end-to-end
 | **Reviewer** | Configured judgment model for final review (Hermes default: Claude Opus 4.8; optional secondary adversarial pass from Codex review) | minutes per work block | final correctness judgment, invariant checks, high-stakes adversarial review |
 | **Memory** | the repo: `docs/HANDOFF.md`, `docs/gates/`, git history | permanent | everything; not in the repo = didn't happen |
 | **Human** | you | final | scope, irreversible calls, taste |
+
+### Hermes behavioral overlay
+
+The Hermes fork keeps the upstream role split, but it now makes the behavioral
+overlay explicit:
+
+- **Loop-wide philosophy:** follow the Karpathy-guidelines — think before
+  coding, prefer the simplest viable plan, keep changes surgical, and express
+  work as verifiable goals.
+- **Claude I / architect:** preferred stack is `interview-me` → `idea-refine`
+  → `spec-driven-development` before the slice is frozen.
+- **Codex builders:** preferred stack is `incremental-implementation` inside
+  each lane.
+- **Claude II / reviewer:** preferred stack is `code-review-and-quality`
+  first, then `code-simplification`.
+
+This is a preferred fork contract, not a new hard runtime dependency. If those
+external skills are unavailable, the prompts in this repo should still mirror
+the same behavior directly.
 
 Why `high` for the architect: Fable 5's docs recommend `high` as the default and
 `xhigh` for capability-sensitive work; low effort on Fable 5 already exceeds
@@ -293,15 +318,19 @@ architect notes this trade-off but defaults to the subscription.
 │   2. Judge: run gates yourself; verdict per gate vs verbatim frozen text   │
 │      PASS / FAIL / INVALID → kill / continue                               │
 │   3. Spec next slice: objective + output format + tool guidance +          │
-│      boundaries + out-of-scope; freeze gates to docs/gates/<slice>.md;     │
+│      boundaries + out-of-scope; in the Hermes fork this is the             │
+│      Claude I stage (`interview-me` / `idea-refine` /                      │
+│      `spec-driven-development`); freeze gates to docs/gates/<slice>.md;    │
 │      commit the freeze                                                     │
 │   4. Dispatch: 1-4 parallel codex exec lanes, one git worktree each        │
 │      (background, fresh context, xhigh default). Per lane: PHASE 0         │
 │      disagree-or-fail → PHASE 1 contracts frozen → PHASE 2 build own       │
-│      files only → raw lane report (docs/lanes/), no commits                │
+│      files only with `incremental-implementation` discipline → raw lane    │
+│      report (docs/lanes/), no commits                                      │
 │   5. Post-flight per lane: raw-only? disagreements raised? gates           │
 │      untouched? in-bounds? → architect commits + merges lanes with         │
-│      gate smoke-runs; verdict waits for next block                         │
+│      gate smoke-runs; next-block judgment applies                          │
+│      `code-review-and-quality` + `code-simplification`                     │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
          repo carries everything across the gap between blocks

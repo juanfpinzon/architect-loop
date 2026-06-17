@@ -35,6 +35,21 @@ The **reviewer** default is Opus 4.8 because the Hermes operating model wants th
 
 An optional adversarial pass from Codex (`codex review --base ...`) is still encouraged for high-stakes slices, but it is a **secondary review lane**, not the owner of the final verdict.
 
+## Behavioral defaults travel with the roles
+
+Model selection is configurable, but the preferred behavior for each role is
+not arbitrary. In the Hermes fork, role defaults also imply a preferred skill
+stack and philosophy:
+
+| Role | Preferred behavioral overlay |
+|---|---|
+| **Architect / Claude I** | Follow the Karpathy-guidelines and use `interview-me` for ambiguity, `idea-refine` for slice-shape pressure testing, and `spec-driven-development` before freezing the slice. |
+| **Builder / Codex** | Follow the Karpathy-guidelines and use `incremental-implementation`: smallest meaningful change, verify each step, no speculative abstractions. |
+| **Reviewer / Claude II** | Follow the Karpathy-guidelines and use `code-review-and-quality` first, then `code-simplification` once correctness is established. |
+| **Researcher** | Keep the same think-before-coding discipline, but stay read-only and evidence-gathering only; synthesis and final judgment remain with the architect. |
+
+See `HERMES_SKILL_ALIGNMENT.md` for the durable phase-by-phase contract.
+
 ## Hardcoded assumption inventory (pre-adaptation)
 These were the places where the repo encoded a fixed model pairing before HER-226 normalized the role-map contract:
 

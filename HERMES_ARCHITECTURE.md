@@ -3,6 +3,11 @@
 ## Purpose
 This fork adapts `architect-loop` to the Hermes operating model.
 
+This document is about **owner systems and artifact boundaries**, not the
+phase-by-phase agent behavior contract. For the preferred Karpathy-guidelines
+overlay and Claude I / Codex / Claude II skill stack, see
+`HERMES_SKILL_ALIGNMENT.md`.
+
 This document applies to the **Hermes-native mode** described in
 `HERMES_OPERATING_MODEL.md`. Portable laptop use can ignore most of the
 owner-system rules here, but still inherits the shared Linear-ticket and

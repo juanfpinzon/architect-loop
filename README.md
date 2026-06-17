@@ -31,6 +31,36 @@ There are two supported ways to use this fork:
   and gh-watchdog layered on top
 
 See [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md) for the exact split.
+See [HERMES_SKILL_ALIGNMENT.md](HERMES_SKILL_ALIGNMENT.md) for the core
+Karpathy-guidelines philosophy and the phase-by-phase agent-skills mapping.
+
+## Core philosophy and phase skills
+
+This fork now treats the
+[Karpathy-guidelines](https://github.com/forrestchang/andrej-karpathy-skills)
+as the load-bearing philosophy across the whole loop:
+
+- **Think before coding** — surface assumptions, manage confusion, and push
+  back on bad specs before builder time is spent.
+- **Simplicity first** — choose the smallest slice and the simplest viable
+  implementation.
+- **Surgical changes** — touch only the files and scope declared for the slice.
+- **Goal-driven execution** — convert asks into frozen gates and verifiable
+  success criteria.
+
+Preferred skill stack when the external
+[agent-skills](https://github.com/addyosmani/agent-skills) library is
+installed:
+
+- **Claude I** → `interview-me` when the ticket is ambiguous,
+  `idea-refine` when the solution shape needs pressure-testing, and
+  `spec-driven-development` before freezing the slice.
+- **Codex builders** → `incremental-implementation` inside each lane.
+- **Claude II** → `code-review-and-quality` for the judgment pass and
+  `code-simplification` as the final simplicity lens.
+
+The loop remains portable even without those external skills installed: the
+fork's prompts now mirror the same behavior directly.
 
 ## Use (two commands)
 
@@ -140,6 +170,11 @@ returns as **Claude II** to run the gates, judge the result, prepare the PR,
 and write back to Linear. Finally,
 **gh-watchdog** performs the final PR review after the PR is raised.
 
+In the preferred fork workflow, **Claude I** applies `interview-me` /
+`idea-refine` / `spec-driven-development`, **Codex** follows
+`incremental-implementation`, and **Claude II** applies
+`code-review-and-quality` plus `code-simplification`.
+
 ### Hermes-native mode workflow
 
 ![](assets/hermes-native-flow.png)
@@ -163,6 +198,7 @@ The architecture and memory-routing contract for this fork lives in
 |---|---|
 | [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md) | Portable-mode vs Hermes-native operating contract and usage flow |
 | [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md) | Hermes-native owner-system and memory-routing contract for this fork |
+| [HERMES_SKILL_ALIGNMENT.md](HERMES_SKILL_ALIGNMENT.md) | Karpathy-guidelines philosophy and Claude I / Codex / Claude II skill mapping |
 | [HERMES_MODEL_ROLES.md](HERMES_MODEL_ROLES.md) | Hermes-native role-map contract, defaults, and configuration surface |
 | [architect-loop.roles.example.yaml](architect-loop.roles.example.yaml) | Example project-level role-map template for future pilot repos |
 | [DESIGN.md](DESIGN.md) | The design document — 12 enforced rules, failure-mode table, cited sources |

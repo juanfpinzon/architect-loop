@@ -57,6 +57,17 @@ commands and the builder block template: `dispatch.md` next to this file.
 - Read the project's operating docs in authority order: `CLAUDE.md` /
   `AGENTS.md` → `README.md` → architecture docs. Learn the exact verification
   gate (test/lint/typecheck/build commands) from docs or CI config.
+- Treat the Karpathy-guidelines as the loop-wide philosophy: surface
+  assumptions before committing to a slice, manage confusion actively, prefer
+  the simplest viable plan, keep changes surgical, and turn asks into
+  verifiable gates.
+- Use `using-agent-skills` as the meta-rule for phase helpers. Preferred stack:
+  **Claude I** uses `interview-me` when the ticket is underspecified,
+  `idea-refine` when multiple slice shapes are plausible, and
+  `spec-driven-development` when writing the actual slice contract. **Claude
+  II** uses `code-review-and-quality` for the judgment rubric and
+  `code-simplification` as the final simplicity lens. If those external skills
+  are unavailable in the environment, emulate the same workflow directly.
 - If the target repo carries `architect-loop.roles.yaml`, read it before
   specifying or dispatching. Otherwise use the repo/operator defaults.
 - Once per environment: `codex --version` (need ≥ 0.133; older versions and
@@ -120,6 +131,13 @@ source URL don't enter the PRD.
 
 One-PR-sized. The spec is the full delegation contract, self-contained:
 
+- **Claude I skill stack** — before freezing anything: run `interview-me` if
+  the Linear ticket leaves outcome / success / constraints ambiguous; run
+  `idea-refine` if the slice shape or decomposition still needs stress-testing;
+  then use `spec-driven-development` to turn the chosen slice into a concrete,
+  reviewable contract. Do not skip straight from vague ticket text to builder
+  dispatch.
+
 - **Objective** — what to build and why (give the reason, not just the ask).
   If a PRD exists (`docs/prd/<slice>.md`), cite it rather than restating it.
 - **Output format** — what the builder reports: raw tables, numbers, commit
@@ -177,6 +195,19 @@ conflicting lane and re-spec it. Consolidate lane reports into
 **Do not judge now** — the gate verdict on the integration branch belongs to
 the next architect session; merge to main only on a PASS/CONTINUE verdict
 there.
+
+### 7. Claude II judgment lens (next session)
+
+When the next architect session returns to judge the integrated slice, apply
+the review stack explicitly:
+
+- **`code-review-and-quality` first** — correctness, readability,
+  architecture, security, performance, and verification evidence decide the
+  verdict.
+- **`code-simplification` second** — once the slice is correct, ask whether it
+  is still heavier than necessary. If the implementation violates the loop's
+  simplicity bar, fail or continue-with-findings; do not silently bless
+  overbuilt work just because the gates passed.
 
 ## Maintenance
 

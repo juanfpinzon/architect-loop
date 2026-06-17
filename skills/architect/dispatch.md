@@ -11,6 +11,11 @@ In the Hermes fork, command examples use placeholders like `<builder-model>`.
 Hermes default: `gpt-5.4`. If the target repo carries `architect-loop.roles.yaml`,
 substitute its configured values before dispatch.
 
+Builders should follow the Karpathy-guidelines philosophy and, when the
+external skill library is present, explicitly load `incremental-implementation`
+before building. The dispatch block below mirrors that behavior so the loop
+stays portable even when the external skills are absent.
+
 **Preflight (once per environment):** run `codex --version`. Need ≥ 0.133.
 On the first dispatch in a new environment, launch ONE canary run and confirm
 it starts cleanly before fanning anything out — CLI flags churn between
@@ -136,6 +141,10 @@ until done. Use when the human wants to watch or steer the run.
 ```
 Execute the architect spec below. Operating rules:
 
+Core philosophy: follow the Karpathy-guidelines. Surface assumptions and
+confusion instead of guessing, prefer the simplest working change, touch only
+the files in your lane, and turn the task into verifiable outcomes.
+
 PHASE 0 — Before any code: reply with your plan and EVERY disagreement you have
 with this spec, with reasons, citing real files in this repo. Silent compliance
 is a failure. Silent scope additions are a failure. If you have no
@@ -152,6 +161,8 @@ PHASE 2 — Build YOUR LANE ONLY: exactly the files listed in BOUNDARIES. You
 are one of several parallel lane agents working in isolated worktrees; files
 outside your lane belong to other agents — touching them fails your lane.
 No placeholder implementations — search the codebase before implementing;
+follow incremental-implementation discipline inside your lane: make the
+smallest meaningful change, run the relevant verification, then continue.
 full implementations only. Verify your work by running the lane's gate
 commands and record the verbatim output. Do NOT commit — the sandbox protects
 .git by design; the architect commits and merges after verification. Do NOT
