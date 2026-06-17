@@ -45,7 +45,7 @@ It means the loop can run from Claude Code on a laptop without requiring Hermes-
 - the repo is still the working execution surface
 - the work starts from a **Linear ticket**, even when the loop is run from a laptop
 - the human points Claude / Hermes to that ticket directly rather than relying on proactive Hermes orchestration
-- **Claude Opus 4.8** is the default architect/reviewer for slice design, frozen gates, gate runs, judgment, PR writeup, and writing back to Linear
+- **Claude Opus 4.8** is the default architect/reviewer in two stages: **Claude I** does slice design + frozen gates, and **Claude II** does gate runs + judgment + PR writeup + writing back to Linear
 - **GPT-5.4** is the default builder for implementation lanes
 - after the PR is raised, **gh-watchdog** performs the final review pass
 - shared vault and Notion are optional surroundings, not required runtime dependencies
@@ -88,20 +88,22 @@ When Hermes uses architect-loop for heavy development work, the recommended sequ
 
 3. **Spec the slice in the repo**
    - create or update the PRD/spec
+   - this is the **Claude I** stage
    - freeze gates in repo files before builder work starts
    - keep execution evidence in repo-local artifacts
 
 4. **Run architect-loop**
-   - Claude / architect judges and dispatches
+   - Claude I hands the frozen slice to Codex
    - Codex builders execute in isolated contexts with the configured builder model
    - repo files capture the slice-local evidence
 
-5. **Open the PR and write back to Linear**
-   - GitHub becomes the review surface
-   - the PR should be well documented
-   - the architect path writes the completed work back to the Linear ticket
+5. **Return to Claude II for judgment and PR prep**
+   - Claude II runs the gates against the built result
+   - Claude II judges whether the slice is ready
+   - Claude II prepares the PR and writes back to the Linear ticket
 
 6. **Let gh-watchdog review downstream**
+   - GitHub becomes the review surface
    - watchdog acts after the PR exists and performs the final review pass
    - follow-up work lands back in Linear if anything new is required
 
