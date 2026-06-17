@@ -128,6 +128,32 @@ upstream's "the repo is the only memory" rule verbatim.
 The dual-mode usage contract for this fork lives in
 [HERMES_OPERATING_MODEL.md](HERMES_OPERATING_MODEL.md).
 
+### Portable mode workflow
+
+![](assets/portable-mode-flow.png)
+
+Portable mode keeps the loop laptop-friendly, but it still starts from a
+**Linear ticket**. You point Claude / Hermes to the slice, **Claude Opus 4.8**
+handles **Claude I** work first: slice design + frozen gates. Then
+**GPT-5.4** handles the parallel Codex build lanes. Then **Claude Opus 4.8**
+returns as **Claude II** to run the gates, judge the result, prepare the PR,
+and write back to Linear. Finally,
+**gh-watchdog** performs the final PR review after the PR is raised.
+
+### Hermes-native mode workflow
+
+![](assets/hermes-native-flow.png)
+
+Hermes-native mode keeps the **same upstream architect loop and the same
+model defaults**, but Hermes may proactively surface the Linear ticket and run
+it inside the broader operating stack. The runtime path is still: **Linear
+Ticket → Claude I (spec + freeze) → Codex builders → Claude II (gates +
+judgment + PR + Linear update) → gh-watchdog final review**.
+
+The editable Excalidraw source files for these diagrams live in
+[`assets/portable-mode-flow.excalidraw`](assets/portable-mode-flow.excalidraw)
+and [`assets/hermes-native-flow.excalidraw`](assets/hermes-native-flow.excalidraw).
+
 The architecture and memory-routing contract for this fork lives in
 [HERMES_ARCHITECTURE.md](HERMES_ARCHITECTURE.md).
 
