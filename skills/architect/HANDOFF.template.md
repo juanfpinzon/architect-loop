@@ -6,6 +6,10 @@
 > output. No interpretation, no "promising". Every claim must be backed by a
 > command result from the run that wrote it.
 > Not in this file = didn't happen.
+> On a fresh start this file is from the *previous* session — what looks
+> current may be stale. Reconcile against the repo (git log, gate freeze
+> commit, working tree, gate output) before trusting it; if they disagree,
+> the repo wins.
 
 ## TL;DR (keep current — next session must grok this in under a minute)
 

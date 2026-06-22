@@ -76,6 +76,12 @@ commands and the builder block template: `dispatch.md` next to this file.
   flag fallbacks are covered in `dispatch.md`). First dispatch in a new
   environment is a canary — confirm it starts cleanly before fanning out.
 - Read `docs/HANDOFF.md` in full plus every `docs/gates/` file it references.
+  On a fresh start the handoff was written by a *previous* session, so what
+  looks current may be stale — treat it as a claim about the last run, not
+  ground truth for this one. Reconcile it against the repo (`git log`, the
+  freeze commit on `docs/gates/`, the actual working tree, the verification
+  gate output) before acting; if the file and the repo disagree, the repo
+  wins and the discrepancy is the first thing to resolve.
   If missing, create both from `HANDOFF.template.md` (next to this file), fill
   the header from the repo, ask the human only for what isn't derivable.
   Keep the handoff a short table of contents (~150 lines): TL;DR + pointers
