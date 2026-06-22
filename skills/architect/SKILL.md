@@ -63,8 +63,10 @@ commands and the builder block template: `dispatch.md` next to this file.
   verifiable gates.
 - Use `using-agent-skills` as the meta-rule for phase helpers. Preferred stack:
   **Claude I** uses `interview-me` when the ticket is underspecified,
-  `idea-refine` when multiple slice shapes are plausible, and
-  `spec-driven-development` when writing the actual slice contract. **Claude
+  `idea-refine` when multiple slice shapes are plausible,
+  `spec-driven-development` when writing the actual slice contract, and
+  `planning-and-task-breakdown` to decompose it into small verifiable tasks
+  with acceptance criteria and dependency ordering. **Claude
   II** uses `code-review-and-quality` for the judgment rubric and
   `code-simplification` as the final simplicity lens. If those external skills
   are unavailable in the environment, emulate the same workflow directly.
@@ -134,9 +136,10 @@ One-PR-sized. The spec is the full delegation contract, self-contained:
 - **Claude I skill stack** — before freezing anything: run `interview-me` if
   the Linear ticket leaves outcome / success / constraints ambiguous; run
   `idea-refine` if the slice shape or decomposition still needs stress-testing;
-  then use `spec-driven-development` to turn the chosen slice into a concrete,
-  reviewable contract. Do not skip straight from vague ticket text to builder
-  dispatch.
+  use `spec-driven-development` to turn the chosen slice into a concrete,
+  reviewable contract; then use `planning-and-task-breakdown` to decompose it
+  into small verifiable tasks with acceptance criteria and dependency ordering.
+  Do not skip straight from vague ticket text to builder dispatch.
 
 - **Objective** — what to build and why (give the reason, not just the ask).
   If a PRD exists (`docs/prd/<slice>.md`), cite it rather than restating it.

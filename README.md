@@ -53,8 +53,10 @@ Preferred skill stack when the external
 installed:
 
 - **Claude I** → `interview-me` when the ticket is ambiguous,
-  `idea-refine` when the solution shape needs pressure-testing, and
-  `spec-driven-development` before freezing the slice.
+  `idea-refine` when the solution shape needs pressure-testing,
+  `spec-driven-development` before freezing the slice, and
+  `planning-and-task-breakdown` to decompose the spec into small verifiable
+  tasks with acceptance criteria and dependency ordering.
 - **Codex builders** → `incremental-implementation` inside each lane.
 - **Claude II** → `code-review-and-quality` for the judgment pass and
   `code-simplification` as the final simplicity lens.
@@ -171,8 +173,8 @@ and write back to Linear. Finally,
 **gh-watchdog** performs the final PR review after the PR is raised.
 
 In the preferred fork workflow, **Claude I** applies `interview-me` /
-`idea-refine` / `spec-driven-development`, **Codex** follows
-`incremental-implementation`, and **Claude II** applies
+`idea-refine` / `spec-driven-development` / `planning-and-task-breakdown`,
+**Codex** follows `incremental-implementation`, and **Claude II** applies
 `code-review-and-quality` plus `code-simplification`.
 
 ### Hermes-native mode workflow

@@ -37,7 +37,7 @@ Across Claude I, Codex builders, and Claude II, the preferred behavior is:
 
 | Phase | Owner | Preferred skills | Expected behavior |
 |---|---|---|---|
-| **Claude I** | architect / planner | `using-agent-skills`, `interview-me`, `idea-refine`, `spec-driven-development` | clarify ticket intent, pressure-test the slice shape, write the reviewable slice contract, freeze gates before builder work |
+| **Claude I** | architect / planner | `using-agent-skills`, `interview-me`, `idea-refine`, `spec-driven-development`, `planning-and-task-breakdown` | clarify ticket intent, pressure-test the slice shape, write the reviewable slice contract, decompose it into small verifiable tasks with acceptance criteria and dependency ordering, freeze gates before builder work |
 | **Codex builders** | implementation lanes | `incremental-implementation` | work in thin increments, verify each meaningful step, keep changes inside lane boundaries, prefer the simplest working implementation |
 | **Claude II** | architect / reviewer | `code-review-and-quality`, `code-simplification` | run the gates, judge the diff against the spec, check readability / architecture / security / performance, then apply a final simplicity lens |
 
@@ -55,6 +55,9 @@ Preferred sequence:
 3. Use `spec-driven-development` to produce the actual slice contract:
    objective, boundaries, output format, tool guidance, lane plan, and frozen
    gates.
+4. Use `planning-and-task-breakdown` to decompose the spec into small
+   verifiable tasks with explicit acceptance criteria and dependency ordering
+   before dispatching builder lanes.
 
 Claude I should not skip directly from vague ticket text to builder dispatch.
 

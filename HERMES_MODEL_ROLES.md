@@ -43,7 +43,7 @@ stack and philosophy:
 
 | Role | Preferred behavioral overlay |
 |---|---|
-| **Architect / Claude I** | Follow the Karpathy-guidelines and use `interview-me` for ambiguity, `idea-refine` for slice-shape pressure testing, and `spec-driven-development` before freezing the slice. |
+| **Architect / Claude I** | Follow the Karpathy-guidelines and use `interview-me` for ambiguity, `idea-refine` for slice-shape pressure testing, and `spec-driven-development` before freezing the slice. Use `planning-and-task-breakdown` for decomposing specs into small verifiable tasks with acceptance criteria and dependency ordering. |
 | **Builder / Codex** | Follow the Karpathy-guidelines and use `incremental-implementation`: smallest meaningful change, verify each step, no speculative abstractions. |
 | **Reviewer / Claude II** | Follow the Karpathy-guidelines and use `code-review-and-quality` first, then `code-simplification` once correctness is established. |
 | **Researcher** | Keep the same think-before-coding discipline, but stay read-only and evidence-gathering only; synthesis and final judgment remain with the architect. |

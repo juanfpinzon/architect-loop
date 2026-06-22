@@ -84,7 +84,8 @@ overlay explicit:
   coding, prefer the simplest viable plan, keep changes surgical, and express
   work as verifiable goals.
 - **Claude I / architect:** preferred stack is `interview-me` → `idea-refine`
-  → `spec-driven-development` before the slice is frozen.
+  → `spec-driven-development` → `planning-and-task-breakdown` before the slice
+  is frozen.
 - **Codex builders:** preferred stack is `incremental-implementation` inside
   each lane.
 - **Claude II / reviewer:** preferred stack is `code-review-and-quality`
@@ -320,8 +321,8 @@ architect notes this trade-off but defaults to the subscription.
 │   3. Spec next slice: objective + output format + tool guidance +          │
 │      boundaries + out-of-scope; in the Hermes fork this is the             │
 │      Claude I stage (`interview-me` / `idea-refine` /                      │
-│      `spec-driven-development`); freeze gates to docs/gates/<slice>.md;    │
-│      commit the freeze                                                     │
+│      `spec-driven-development` / `planning-and-task-breakdown`); freeze    │
+│      gates to docs/gates/<slice>.md; commit the freeze                     │
 │   4. Dispatch: 1-4 parallel codex exec lanes, one git worktree each        │
 │      (background, fresh context, xhigh default). Per lane: PHASE 0         │
 │      disagree-or-fail → PHASE 1 contracts frozen → PHASE 2 build own       │

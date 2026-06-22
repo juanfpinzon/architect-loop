@@ -91,7 +91,9 @@ When Hermes uses architect-loop for heavy development work, the recommended sequ
    - this is the **Claude I** stage
    - preferred skill stack: `interview-me` if the ticket is ambiguous,
      `idea-refine` if multiple slice shapes are viable,
-     `spec-driven-development` for the final slice contract
+     `spec-driven-development` for the final slice contract,
+     `planning-and-task-breakdown` to decompose it into small verifiable
+     tasks with acceptance criteria and dependency ordering
    - freeze gates in repo files before builder work starts
    - keep execution evidence in repo-local artifacts
 
